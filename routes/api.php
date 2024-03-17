@@ -3,7 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\api\UserController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\api\AdminController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\api\StudentController;
@@ -126,3 +129,32 @@ Route::middleware('auth:student')->group(function () {
         return 'student access';
     });
 });
+
+
+
+
+
+
+
+// Article routes
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles/by-category/{categoryId}', [ArticleController::class, 'getByCategory']);
+Route::post('/articles', [ArticleController::class, 'store']);
+Route::get('/articles/{id}', [ArticleController::class, 'show']);
+Route::put('/articles/{id}', [ArticleController::class, 'update']);
+Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
+
+// Comment routes
+Route::get('/comments', [CommentController::class, 'index']);
+Route::post('/comments', [CommentController::class, 'store']);
+Route::get('/comments/{id}', [CommentController::class, 'show']);
+Route::put('/comments/{id}', [CommentController::class, 'update']);
+Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+// Category routes
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+Route::get('/categories/{id}/subcategories', [CategoryController::class, 'getSubcategories']);
