@@ -6,43 +6,55 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Get list of comments with their users and articles
     public function index()
     {
-        //
+        return Comment::with('user', 'article')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Create a new comment
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'content' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'article_id' => 'required|exists:articles,id',
+        ]);
+
+        $comment = Comment::create($request->all());
+
+        return response()->json($comment, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Update an existing comment
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'content' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'article_id' => 'required|exists:articles,id',
+        ]);
+
+        $comment = Comment::findOrFail($id);
+        $comment->update($request->all());
+
+        return response()->json($comment, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Delete a comment
+    public function destroy($id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+
+        return response()->json(null, 204);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Show a specific comment with its user and article
+    public function show($id)
     {
-        //
+        $comment = Comment::with('user', 'article')->findOrFail($id);
+
+        return response()->json($comment, 200);
     }
 }
