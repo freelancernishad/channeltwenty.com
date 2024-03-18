@@ -11,7 +11,17 @@ class ArticleController extends Controller
      // Get list of articles with their categories
      public function index()
      {
-         return Article::with('categories')->get();
+        $articles = Article::with('categories')->get();
+
+        $articles->transform(function ($article) {
+            $article->categories = $article->formattedCategories;
+            unset($article->formattedCategories);
+            return $article;
+        });
+        
+        return $articles;
+
+
      }
 
      // Get list of articles by category
