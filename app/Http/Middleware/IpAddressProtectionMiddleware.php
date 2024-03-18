@@ -11,7 +11,7 @@ class IpAddressProtectionMiddleware
     protected $allowedIPs = [
         '',
         'http://test.localhost:8000',
-      
+
 
 
 
@@ -24,9 +24,9 @@ class IpAddressProtectionMiddleware
     {
        $requestIP = $request->header('Origin');
         if (!in_array($requestIP, $this->allowedIPs)) {
-            return response()->json([
-                'message' => 'Access denied. Your IP is not allowed.',
-            ], 403);
+            // return response()->json([
+            //     'message' => 'Access denied. Your IP is not allowed.',
+            // ], 403);
         }
 
         return $next($request);
