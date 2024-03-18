@@ -35,12 +35,12 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             // $token = JWTAuth::fromUser($user);
-            $payload = [
-                'email' => $user->email,
-                'name' => $user->name,
-            ];
-            $token = JWTAuth::fromUser($user, $payload);
-            return response()->json(['token' => $token], 200);
+             $payload = [
+            'email' => $user->email,
+            'name' => $user->name,
+        ];
+            $token = JWTAuth::fromUser($user, ['guard' => 'user']);
+            return response()->json(['token' => $token,'payload'=>$payload], 200);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);
