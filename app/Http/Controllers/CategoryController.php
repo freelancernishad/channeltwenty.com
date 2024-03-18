@@ -20,7 +20,6 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'label' => 'nullable',
             'slug' => 'required|unique:categories',
-            'user_id' => 'required|exists:users,id',
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
@@ -33,10 +32,10 @@ class CategoryController extends Controller
             $file = $request->file('banner');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('category/banner', $fileName, 'protected');
-        } else {
-            return response()->json(['error' => 'No banner file provided.'], 422);
         }
         $requestdata  = $request->all();
+        $user = auth()->user();
+        $requestdata['user_id'] = $user->id;
         $requestdata['banner'] = url('files/'.$filePath);
 
         $category = Category::create($requestdata);
@@ -51,7 +50,6 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'label' => 'nullable',
             'slug' => 'required|unique:categories,slug,' . $id,
-            'user_id' => 'required|exists:users,id',
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
@@ -66,10 +64,12 @@ class CategoryController extends Controller
             $file = $request->file('banner');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('category/banner', $fileName, 'protected');
-        } else {
-            return response()->json(['error' => 'No banner file provided.'], 422);
         }
+
+
         $requestdata  = $request->all();
+        $user = auth()->user();
+        $requestdata['user_id'] = $user->id;
         $requestdata['banner'] = url('files/'.$filePath);
         $category->update($requestdata);
 
