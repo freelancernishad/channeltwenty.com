@@ -40,7 +40,7 @@ class AuthController extends Controller
             'name' => $user->name,
         ];
             $token = JWTAuth::fromUser($user, ['guard' => 'user']);
-            return response()->json(['token' => $token,'payload'=>$payload], 200);
+            return response()->json(['token' => $token,'user'=>$payload], 200);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);
