@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
 {
@@ -26,22 +27,40 @@ class ArticleController extends Controller
        // Create a new article
        public function store(Request $request)
        {
-           $request->validate([
-               'title' => 'required',
-               'author' => 'required',
-               'date' => 'required|date',
-               'content' => 'required',
-               'categories' => 'required|array',
-           ]);
 
+           $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'date' => 'required|date',
+            'content' => 'required',
+            'categories' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
            // Get the authenticated user using the bearer token
            $user = auth()->user();
 
+
+
+           if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('post/banner', $fileName, 'protected');
+        } else {
+            return response()->json(['error' => 'No banner file provided.'], 422);
+        }
+
+
+
+
+
            $article = Article::create([
                'title' => $request->title,
-               'author' => $request->author,
+               'author' => $user->name,
                'date' => $request->date,
                'content' => $request->content,
+               'banner' => url('files/'.$filePath),
                'user_id' => $user->id, // Get the user_id from the authenticated user
            ]);
 
@@ -53,14 +72,17 @@ class ArticleController extends Controller
        // Update an existing article
        public function update(Request $request, $id)
        {
-           $request->validate([
-               'title' => 'required',
-               'author' => 'required',
-               'date' => 'required|date',
-               'content' => 'required',
-               'categories' => 'required|array',
-           ]);
 
+           $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'date' => 'required|date',
+            'content' => 'required',
+            'categories' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
            // Get the authenticated user using the bearer token
            $user = auth()->user();
 
@@ -70,12 +92,26 @@ class ArticleController extends Controller
                return response()->json(['error' => 'Unauthorized'], 401);
            }
 
-           $article->update([
-               'title' => $request->title,
-               'author' => $request->author,
-               'date' => $request->date,
-               'content' => $request->content,
-           ]);
+
+
+
+
+
+        $updatedData = [
+            'title' => $request->title,
+            'author' => $user->name,
+            'date' => $request->date,
+            'content' => $request->content,
+
+        ];
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('post/banner', $fileName, 'protected');
+            $updatedData['banner'] = url('files/'.$filePath);
+        }
+           $article->update($updatedData);
 
            $article->categories()->sync($request->categories);
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
@@ -15,11 +17,16 @@ class CommentController extends Controller
     // Create a new comment
     public function store(Request $request)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'content' => 'required',
             'user_id' => 'required|exists:users,id',
             'article_id' => 'required|exists:articles,id',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
 
         $comment = Comment::create($request->all());
 
@@ -29,11 +36,16 @@ class CommentController extends Controller
     // Update an existing comment
     public function update(Request $request, $id)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'content' => 'required',
             'user_id' => 'required|exists:users,id',
             'article_id' => 'required|exists:articles,id',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
 
         $comment = Comment::findOrFail($id);
         $comment->update($request->all());

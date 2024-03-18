@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     // Get list of categories with their parent categories
@@ -16,15 +16,30 @@ class CategoryController extends Controller
     // Create a new category
     public function store(Request $request)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'label' => 'nullable',
             'slug' => 'required|unique:categories',
-            'banner' => 'nullable',
             'user_id' => 'required|exists:users,id',
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
-        $category = Category::create($request->all());
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('category/banner', $fileName, 'protected');
+        } else {
+            return response()->json(['error' => 'No banner file provided.'], 422);
+        }
+        $requestdata  = $request->all();
+        $requestdata['banner'] = url('files/'.$filePath);
+
+        $category = Category::create($requestdata);
 
         return response()->json($category, 201);
     }
@@ -32,16 +47,31 @@ class CategoryController extends Controller
     // Update an existing category
     public function update(Request $request, $id)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'label' => 'nullable',
             'slug' => 'required|unique:categories,slug,' . $id,
-            'banner' => 'nullable',
             'user_id' => 'required|exists:users,id',
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
         $category = Category::findOrFail($id);
-        $category->update($request->all());
+
+
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('category/banner', $fileName, 'protected');
+        } else {
+            return response()->json(['error' => 'No banner file provided.'], 422);
+        }
+        $requestdata  = $request->all();
+        $requestdata['banner'] = url('files/'.$filePath);
+        $category->update($requestdata);
 
         return response()->json($category, 200);
     }
