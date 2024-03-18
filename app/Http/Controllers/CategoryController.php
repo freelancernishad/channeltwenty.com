@@ -28,15 +28,16 @@ class CategoryController extends Controller
         }
 
 
+
+        $requestdata  = $request->all();
+        $user = auth()->user();
+        $requestdata['user_id'] = $user->id;
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('category/banner', $fileName, 'protected');
+            $requestdata['banner'] = url('files/'.$filePath);
         }
-        $requestdata  = $request->all();
-        $user = auth()->user();
-        $requestdata['user_id'] = $user->id;
-        $requestdata['banner'] = url('files/'.$filePath);
 
         $category = Category::create($requestdata);
 
@@ -60,17 +61,18 @@ class CategoryController extends Controller
 
 
 
-        if ($request->hasFile('banner')) {
-            $file = $request->file('banner');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('category/banner', $fileName, 'protected');
-        }
+
 
 
         $requestdata  = $request->all();
         $user = auth()->user();
         $requestdata['user_id'] = $user->id;
-        $requestdata['banner'] = url('files/'.$filePath);
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('category/banner', $fileName, 'protected');
+            $requestdata['banner'] = url('files/'.$filePath);
+        }
         $category->update($requestdata);
 
         return response()->json($category, 200);
