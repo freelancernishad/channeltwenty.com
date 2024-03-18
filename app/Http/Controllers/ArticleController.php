@@ -30,7 +30,6 @@ class ArticleController extends Controller
 
            $validator = Validator::make($request->all(), [
             'title' => 'required',
-            'date' => 'required|date',
             'content' => 'required',
             'categories' => 'required|array',
         ]);
@@ -58,7 +57,7 @@ class ArticleController extends Controller
            $article = Article::create([
                'title' => $request->title,
                'author' => $user->name,
-               'date' => $request->date,
+               'date' => date('Y-m-d'),
                'content' => $request->content,
                'banner' => url('files/'.$filePath),
                'user_id' => $user->id, // Get the user_id from the authenticated user
@@ -75,7 +74,6 @@ class ArticleController extends Controller
 
            $validator = Validator::make($request->all(), [
             'title' => 'required',
-            'date' => 'required|date',
             'content' => 'required',
             'categories' => 'required|array',
         ]);
@@ -100,7 +98,6 @@ class ArticleController extends Controller
         $updatedData = [
             'title' => $request->title,
             'author' => $user->name,
-            'date' => $request->date,
             'content' => $request->content,
 
         ];
