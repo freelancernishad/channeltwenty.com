@@ -11,6 +11,8 @@ class IpAddressProtectionMiddleware
     protected $allowedIPs = [
         '',
         'http://test.localhost:8000',
+        'http://localhost:5173',
+        'https://channel20-suyel.netlify.app',
 
 
 
@@ -24,9 +26,9 @@ class IpAddressProtectionMiddleware
     {
        $requestIP = $request->header('Origin');
         if (!in_array($requestIP, $this->allowedIPs)) {
-            // return response()->json([
-            //     'message' => 'Access denied. Your IP is not allowed.',
-            // ], 403);
+            return response()->json([
+                'message' => 'Access denied. Your IP is not allowed.',
+            ], 403);
         }
 
         return $next($request);
