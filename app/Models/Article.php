@@ -38,4 +38,13 @@ class Article extends Model
         });
     }
 
+
+
+    public static function getByCategorySlug($categorySlug)
+    {
+        return static::whereHas('categories', function ($query) use ($categorySlug) {
+            $query->where('slug', $categorySlug);
+        })->get();
+    }
+
 }

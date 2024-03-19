@@ -18,7 +18,7 @@ class ArticleController extends Controller
             unset($article->formattedCategories);
             return $article;
         });
-        
+
         return $articles;
 
 
@@ -141,4 +141,14 @@ class ArticleController extends Controller
 
          return response()->json($article, 200);
      }
+
+
+     function getArticlesBySlug($slug) {
+        $categorySlug = $slug;
+        $articles = Article::getByCategorySlug($categorySlug);
+
+        return $articles;
+     }
+
+
 }
