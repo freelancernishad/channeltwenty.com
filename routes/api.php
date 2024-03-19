@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 Route::post('/articles', [ArticleController::class, 'store']);
 Route::get('/articles/{id}', [ArticleController::class, 'show']);
 Route::post('/articles/{id}', [ArticleController::class, 'update']);
+Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
 // Comment routes
 Route::get('/comments', [CommentController::class, 'index']);
@@ -111,12 +112,12 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
     Route::get('/articles/by-category/{categoryId}', [ArticleController::class, 'getByCategory']);
     Route::get('/articles/{id}', [ArticleController::class, 'show']);
 
-    
+
     // Comment routes
     Route::get('/comments', [CommentController::class, 'index']);
     Route::get('/comments/{id}', [CommentController::class, 'show']);
 
-    
+
     // Category routes
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{id}', [CategoryController::class, 'show']);
