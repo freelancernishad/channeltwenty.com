@@ -40,11 +40,11 @@ class Article extends Model
 
 
 
-    public static function getByCategorySlug($categorySlug)
+    public static function getByCategorySlug($categorySlug, $perPage = 10)
     {
         return static::whereHas('categories', function ($query) use ($categorySlug) {
             $query->where('slug', $categorySlug);
-        })->get();
+        })->orderBy('id','desc')->paginate($perPage);
     }
 
 }

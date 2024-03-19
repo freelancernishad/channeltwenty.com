@@ -145,7 +145,9 @@ class ArticleController extends Controller
 
      function getArticlesBySlug($slug) {
         $categorySlug = $slug;
-        $articles = Article::getByCategorySlug($categorySlug);
+        $perPage = 15;
+
+        $articles = Article::getByCategorySlug($categorySlug, $perPage);
 
         return $articles;
      }
