@@ -14,6 +14,7 @@ class IpAddressProtectionMiddleware
         'http://localhost:5173',
         'https://channel20-suyel.netlify.app',
         'https://channeltwenty.com',
+        'https://www.channeltwenty.com',
 
 
 
