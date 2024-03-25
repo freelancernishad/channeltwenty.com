@@ -153,7 +153,7 @@ class ArticleController extends Controller
      }
      function getLatestarticles() {
 
-        $latestArticles = Article::latestArticles();
+        $latestArticles = Article::latestArticles(10);
         return $latestArticles;
      }
 
