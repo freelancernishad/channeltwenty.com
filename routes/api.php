@@ -114,6 +114,7 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
     Route::get('/articles/list/{slug}', [ArticleController::class, 'getArticlesBySlug']);
 
     Route::get('/all/latest/articles', [ArticleController::class, 'getLatestarticles']);
+    Route::get('/all/related/articles/{articleSlug}', [ArticleController::class, 'getRelatedArticles']);
 
 
     // Comment routes

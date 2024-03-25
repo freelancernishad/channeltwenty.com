@@ -61,17 +61,19 @@ class ArticleController extends Controller
         }
 
 
+        $article = new Article();
 
 
+        $article->title = $request->title; // Set the title
+        $article->setSlugAttribute($article->title);
+        $article->author = $user->name; // Set other attributes
+        $article->date = date('Y-m-d'); // Set other attributes
+        $article->content = $request->content;
+        $article->banner = url('files/'.$filePath);
+        $article->user_id = $user->id;
+        $article->save();
 
-           $article = Article::create([
-               'title' => $request->title,
-               'author' => $user->name,
-               'date' => date('Y-m-d'),
-               'content' => $request->content,
-               'banner' => url('files/'.$filePath),
-               'user_id' => $user->id, // Get the user_id from the authenticated user
-           ]);
+
 
            $article->categories()->attach($request->categories);
 
@@ -102,23 +104,24 @@ class ArticleController extends Controller
 
 
 
+           $article->title = $request->title;
+           $article->author = $user->name;
+           $article->content = $request->content;
 
 
 
-        $updatedData = [
-            'title' => $request->title,
-            'author' => $user->name,
-            'content' => $request->content,
 
-        ];
+
 
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $filePath = $file->storeAs('post/banner', $fileName, 'protected');
-            $updatedData['banner'] = url('files/'.$filePath);
+            // $updatedData['banner'] = url('files/'.$filePath);
+            $article->banner = url('files/'.$filePath);
         }
-           $article->update($updatedData);
+        //    $article->update($updatedData);
+            $article->save();
 
            $article->categories()->sync($request->categories);
 
@@ -155,6 +158,13 @@ class ArticleController extends Controller
 
         $latestArticles = Article::latestArticles(10);
         return $latestArticles;
+     }
+
+     function getRelatedArticles($articleSlug) {
+
+        $article = new Article();
+        $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug);
+        return $relatedArticles;
      }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'author', 'date', 'content', 'user_id', 'banner'];
+    protected $fillable = ['title', 'author', 'date', 'content', 'user_id', 'banner', 'slug'];
 
     public function user()
     {
@@ -50,6 +51,26 @@ class Article extends Model
     public static function latestArticles($limit = 10)
     {
         return static::latest()->take($limit)->get();
+    }
+
+
+    public function relatedArticlesByArticleSlug($articleSlug, $limit = 5)
+    {
+        $article = static::where('slug', $articleSlug)->firstOrFail();
+
+        $relatedArticles = static::whereHas('categories', function ($query) use ($article) {
+            $query->whereIn('id', $article->categories()->pluck('id'));
+        })
+        ->where('id', '!=', $article->id) // Exclude the current article
+        ->latest()
+        ->take($limit)
+        ->get();
+
+        return $relatedArticles;
+    }
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = Str::slug($value);
     }
 
 }
