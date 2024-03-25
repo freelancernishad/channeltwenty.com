@@ -47,4 +47,9 @@ class Article extends Model
         })->orderBy('id','desc')->paginate($perPage);
     }
 
+    public static function latestArticles($limit = 10)
+    {
+        return static::latest()->take($limit)->get();
+    }
+
 }

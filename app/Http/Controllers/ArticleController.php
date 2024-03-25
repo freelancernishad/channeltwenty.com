@@ -151,6 +151,11 @@ class ArticleController extends Controller
 
         return $articles;
      }
+     function getLatestarticles() {
+
+        $latestArticles = Article::latestArticles();
+        return $latestArticles;
+     }
 
 
 }
