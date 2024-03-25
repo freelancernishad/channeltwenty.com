@@ -59,9 +59,9 @@ class Article extends Model
         $article = static::where('slug', $articleSlug)->firstOrFail();
 
         $relatedArticles = static::whereHas('categories', function ($query) use ($article) {
-            $query->whereIn('id', $article->categories()->pluck('id'));
+            $query->whereIn('categories.id', $article->categories()->pluck('categories.id')); // Specify the table name or alias for the id column
         })
-        ->where('id', '!=', $article->id) // Exclude the current article
+        ->where('articles.id', '!=', $article->id) // Specify the table name or alias for the id column
         ->latest()
         ->take($limit)
         ->get();

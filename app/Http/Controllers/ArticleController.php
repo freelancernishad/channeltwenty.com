@@ -160,10 +160,16 @@ class ArticleController extends Controller
         return $latestArticles;
      }
 
-     function getRelatedArticles($articleSlug) {
+     function getRelatedArticles(Request $request,$articleSlug) {
 
+        $limit = $request->limit;
+        if($limit){
+            $limit = $request->limit;
+        }else{
+            $limit = 8;
+        }
         $article = new Article();
-        $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug);
+        $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug,$limit);
         return $relatedArticles;
      }
 
