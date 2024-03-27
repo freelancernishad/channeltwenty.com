@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Article;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -39,6 +41,21 @@ Route::apiResource('permissions', PermissionController::class);
 Route::post('get/permissions/{roleName}', [RoleController::class, 'getPermissionsByRoleName']);
 Route::post('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'attachPermission']);
 Route::delete('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'detachPermission']);
+
+
+Route::get('/update/slug', function (Request $request) {
+       // Get all articles from the database
+       $articles = Article::all();
+
+       // Loop through each article and update its slug based on the title
+       foreach ($articles as $article) {
+           $article->slug = Str::slug($article->title); // Update slug based on title
+           $article->save(); // Save the changes
+       }
+
+       return response()->json(['message' => 'Article slugs updated successfully'], 200);
+});
+
 
 
 Route::get('/userAgent', function (Request $request) {
