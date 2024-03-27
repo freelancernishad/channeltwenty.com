@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Article;
+use App\Services\DateService;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +18,18 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
+});
+
+
+Route::get('/news/{slug}', function ($slug) {
+
+
+    $article = Article::with('categories')->where('slug', $slug)->firstOrFail();
+    $article = DateService::formatArticleDate($article);
+
+
+
+    return view('sharedPost',compact('article'));
 });
 
 require __DIR__.'/auth.php';
