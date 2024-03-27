@@ -111,6 +111,7 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
     Route::get('/articles', [ArticleController::class, 'index']);
     Route::get('/articles/by-category/{categoryId}', [ArticleController::class, 'getByCategory']);
     Route::get('/articles/{id}', [ArticleController::class, 'show']);
+    Route::get('/article/{slug}', [ArticleController::class, 'showBySlug']);
     Route::get('/articles/list/{slug}', [ArticleController::class, 'getArticlesBySlug']);
 
     Route::get('/all/latest/articles', [ArticleController::class, 'getLatestarticles']);

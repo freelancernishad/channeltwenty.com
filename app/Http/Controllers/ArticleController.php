@@ -148,6 +148,14 @@ class ArticleController extends Controller
          return response()->json($article, 200);
      }
 
+     public function showBySlug($slug)
+     {
+         $article = Article::with('categories')->where('slug', $slug)->firstOrFail();
+         $article = DateService::formatArticleDate($article);
+
+         return response()->json($article, 200);
+     }
+
 
      function getArticlesBySlug($slug) {
         $categorySlug = $slug;
