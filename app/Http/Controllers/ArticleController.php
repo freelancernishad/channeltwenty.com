@@ -195,6 +195,7 @@ class ArticleController extends Controller
         $article = new Article();
         $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug,$limit);
         $relatedArticles = ContentService::sortArticleContents($relatedArticles);
+        $relatedArticles = DateService::formatArticleDates($relatedArticles);
         return ArticleResource::collection($relatedArticles);
         return $relatedArticles;
      }
