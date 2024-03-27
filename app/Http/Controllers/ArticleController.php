@@ -6,20 +6,28 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Services\DateService;
 use App\Services\ContentService;
+use App\Http\Resources\ArticleResource;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
 {
      // Get list of articles with their categories
-     public function index()
+     public function index(Request $request)
      {
-        $articles = Article::all();
 
+        if($request->paginate){
+            $paginate = $request->paginate;
+            $articles = Article::paginate($paginate);
+        }else{
+            $articles = Article::all();
 
+        }
 
         $articles = DateService::formatArticleDates($articles);
         $articles = ContentService::sortArticleContents($articles);
-        return $articles;
+        // return $articles;
+        return ArticleResource::collection($articles);
+
 
 
      }
