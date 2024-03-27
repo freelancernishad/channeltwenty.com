@@ -143,7 +143,7 @@ class ArticleController extends Controller
      public function show($id)
      {
          $article = Article::with('categories')->findOrFail($id);
-         $articles = DateService::formatArticleDates($article);
+         $article = DateService::formatArticleDate($article);
 
          return response()->json($article, 200);
      }
