@@ -50,7 +50,7 @@ class Article extends Model
 
     public static function latestArticles($limit = 10)
     {
-        return static::latest()->take($limit)->get();
+        return static::latest()->take($limit)->orderBy('id','desc')->get();
     }
 
 

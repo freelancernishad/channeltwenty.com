@@ -18,9 +18,9 @@ class ArticleController extends Controller
 
         if($request->paginate){
             $paginate = $request->paginate;
-            $articles = Article::with('categories')->paginate($paginate);
+            $articles = Article::with('categories')->orderBy('id','desc')->paginate($paginate);
         }else{
-            $articles = Article::with('categories')->get();
+            $articles = Article::with('categories')->orderBy('id','desc')->get();
 
         }
 
@@ -38,7 +38,7 @@ class ArticleController extends Controller
      {
          $articles = Article::whereHas('categories', function ($query) use ($categoryId) {
              $query->where('category_id', $categoryId);
-         })->with('categories')->get();
+         })->with('categories')->orderBy('id','desc')->get();
 
          $articles = ContentService::sortArticleContents($articles);
          return $articles;
