@@ -19,7 +19,7 @@
     // JavaScript redirection
     setTimeout(function() {
       window.location.href = "https://channeltwenty.com/news/<?php echo urlencode($article->slug); ?>"; // Replace "https://channeltwenty.com/news/" with the base URL and $article->slug with the dynamic slug
-    }, 3000); // Redirect after 3 seconds, you can adjust this value as needed
+    }, 1000); // Redirect after 3 seconds, you can adjust this value as needed
   </script>
 </body>
 
