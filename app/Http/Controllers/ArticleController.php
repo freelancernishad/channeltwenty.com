@@ -22,6 +22,7 @@ class ArticleController extends Controller
         });
 
         $articles = DateService::formatArticleDates($articles);
+        $articles = ContentService::sortArticleContents($articles);
         return $articles;
 
 
@@ -34,6 +35,7 @@ class ArticleController extends Controller
              $query->where('category_id', $categoryId);
          })->with('categories')->get();
 
+         $articles = ContentService::sortArticleContents($articles);
          return $articles;
      }
 
@@ -166,11 +168,13 @@ class ArticleController extends Controller
 
         $articles = Article::getByCategorySlug($categorySlug, $perPage);
         $articles = DateService::formatArticleDates($articles);
+        $articles = ContentService::sortArticleContents($articles);
         return $articles;
      }
      function getLatestarticles() {
 
         $latestArticles = Article::latestArticles(10);
+        $latestArticles = ContentService::sortArticleContents($latestArticles);
         return $latestArticles;
      }
 
@@ -184,6 +188,7 @@ class ArticleController extends Controller
         }
         $article = new Article();
         $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug,$limit);
+        $relatedArticles = ContentService::sortArticleContents($relatedArticles);
         return $relatedArticles;
      }
 
