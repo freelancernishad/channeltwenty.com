@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Services\DateService;
+use App\Services\ContentService;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -152,6 +153,8 @@ class ArticleController extends Controller
      {
          $article = Article::with('categories')->where('slug', $slug)->firstOrFail();
          $article = DateService::formatArticleDate($article);
+
+
 
          return response()->json($article, 200);
      }

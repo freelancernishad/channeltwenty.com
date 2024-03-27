@@ -2,6 +2,7 @@
 
 use App\Models\Article;
 use App\Services\DateService;
+use App\Services\ContentService;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,6 +27,15 @@ Route::get('/news/{slug}', function ($slug) {
 
     $article = Article::with('categories')->where('slug', $slug)->firstOrFail();
     $article = DateService::formatArticleDate($article);
+    $article = ContentService::sortArticleContent($article);
+
+
+
+
+
+
+
+
 
 
 
