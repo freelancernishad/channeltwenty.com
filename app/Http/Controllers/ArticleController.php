@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Services\DateService;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -19,6 +20,7 @@ class ArticleController extends Controller
             return $article;
         });
 
+        $articles = DateService::formatArticleDates($articles);
         return $articles;
 
 
@@ -67,7 +69,7 @@ class ArticleController extends Controller
         $article->title = $request->title; // Set the title
         $article->setSlugAttribute($article->title);
         $article->author = $user->name; // Set other attributes
-        $article->date = date('Y-m-d'); // Set other attributes
+        $article->date = date('Y-m-d H:i:s'); // Set other attributes
         $article->content = $request->content;
         $article->banner = url('files/'.$filePath);
         $article->user_id = $user->id;
@@ -151,7 +153,7 @@ class ArticleController extends Controller
         $perPage = 15;
 
         $articles = Article::getByCategorySlug($categorySlug, $perPage);
-
+        $articles = DateService::formatArticleDates($articles);
         return $articles;
      }
      function getLatestarticles() {
