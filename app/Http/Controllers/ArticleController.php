@@ -173,7 +173,7 @@ class ArticleController extends Controller
         $articles = Article::getByCategorySlug($categorySlug, $perPage);
         $articles = DateService::formatArticleDates($articles);
         $articles = ContentService::sortArticleContents($articles);
-        return $articles;
+       return ArticleResource::collection($articles);
      }
      function getLatestarticles() {
 
@@ -181,7 +181,7 @@ class ArticleController extends Controller
         $latestArticles = ContentService::sortArticleContents($latestArticles);
 
         return ArticleResource::collection($latestArticles);
-        return $latestArticles;
+        // return $latestArticles;
      }
 
      function getRelatedArticles(Request $request,$articleSlug) {
@@ -195,6 +195,7 @@ class ArticleController extends Controller
         $article = new Article();
         $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug,$limit);
         $relatedArticles = ContentService::sortArticleContents($relatedArticles);
+        return ArticleResource::collection($relatedArticles);
         return $relatedArticles;
      }
 
