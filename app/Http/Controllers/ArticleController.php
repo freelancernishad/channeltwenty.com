@@ -179,6 +179,8 @@ class ArticleController extends Controller
 
         $latestArticles = Article::latestArticles(10);
         $latestArticles = ContentService::sortArticleContents($latestArticles);
+
+        return ArticleResource::collection($latestArticles);
         return $latestArticles;
      }
 
