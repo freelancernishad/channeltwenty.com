@@ -35,6 +35,9 @@ use App\Http\Controllers\Auth\orgs\OrganizationAuthController;
 // Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+Route::get('/update/slug', [ArticleController::class, 'updateSlugs']);
+
+
 
 Route::apiResource('roles', RoleController::class);
 Route::apiResource('permissions', PermissionController::class);
@@ -43,18 +46,7 @@ Route::post('roles/{role}/permissions/{permission}', [RolePermissionController::
 Route::delete('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'detachPermission']);
 
 
-Route::get('/update/slug', function (Request $request) {
-       // Get all articles from the database
-       $articles = Article::all();
 
-       // Loop through each article and update its slug based on the title
-       foreach ($articles as $article) {
-           $article->slug = Str::slug($article->title); // Update slug based on title
-           $article->save(); // Save the changes
-       }
-
-       return response()->json(['message' => 'Article slugs updated successfully'], 200);
-});
 
 
 
@@ -88,7 +80,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/user-access', function (Request $request) {
         return 'user access';
     });
-
 
 
 

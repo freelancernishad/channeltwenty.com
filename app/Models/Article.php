@@ -68,9 +68,22 @@ class Article extends Model
 
         return $relatedArticles;
     }
+
     public function setSlugAttribute($value)
     {
-        $this->attributes['slug'] = Str::slug($value);
+        $originalSlug = $slug = Str::slug($value);
+
+        // Check if the slug already exists in the database
+        $count = Article::where('slug', $slug)->where('id', '<>', $this->id)->count();
+
+        $i = 1;
+        while ($count > 0) {
+            $slug = $originalSlug . '-' . $i; // Append a number to make the slug unique
+            $count = Article::where('slug', $slug)->where('id', '<>', $this->id)->count();
+            $i++;
+        }
+
+        $this->attributes['slug'] = $slug;
     }
 
 

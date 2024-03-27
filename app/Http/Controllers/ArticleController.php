@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\DateService;
 use App\Services\ContentService;
@@ -198,6 +199,24 @@ class ArticleController extends Controller
         $relatedArticles = DateService::formatArticleDates($relatedArticles);
         return ArticleResource::collection($relatedArticles);
         return $relatedArticles;
+     }
+
+
+
+
+     public function updateSlugs()
+     {
+          // Get all articles from the database
+          $articles = Article::all();
+
+          // Loop through each article and update its slug based on the title
+          foreach ($articles as $article) {
+            $article->setSlugAttribute($article->title);
+            //  return $article->setSlugAttribute($article->title); // Use setSlugAttribute method to generate unique slug
+              $article->save(); // Save the changes
+          }
+
+          return response()->json(['message' => 'Article slugs updated successfully'], 200);
      }
 
 
