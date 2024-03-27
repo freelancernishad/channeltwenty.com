@@ -18,9 +18,9 @@ class ArticleController extends Controller
 
         if($request->paginate){
             $paginate = $request->paginate;
-            $articles = Article::paginate($paginate);
+            $articles = Article::with('categories')->paginate($paginate);
         }else{
-            $articles = Article::all();
+            $articles = Article::with('categories')->get();
 
         }
 
