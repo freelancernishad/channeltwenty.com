@@ -77,7 +77,7 @@ class ArticleController extends Controller
 
         $article->title = $request->title; // Set the title
         $article->setSlugAttribute($article->title);
-        $article->author = $user->name; // Set other attributes
+        $article->author = $request->author; // Set other attributes
         $article->date = date('Y-m-d H:i:s'); // Set other attributes
         $article->content = $request->content;
         $article->banner = url('files/'.$filePath);
@@ -116,7 +116,7 @@ class ArticleController extends Controller
 
 
            $article->title = $request->title;
-           $article->author = $user->name;
+           $article->author = $request->author;
            $article->content = $request->content;
 
 
