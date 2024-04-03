@@ -10,7 +10,7 @@ class CategoryController extends Controller
     // Get list of categories with their parent categories
     public function index()
     {
-        return Category::with('parent')->get();
+        return Category::with('parent')->orderBy('serial','asc')->get();
     }
 
     // Create a new category

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\DateService;
 use App\Services\ContentService;
+use App\Services\ReadArticleService;
 use App\Http\Resources\ArticleResource;
 use Illuminate\Support\Facades\Validator;
 
@@ -156,10 +157,36 @@ class ArticleController extends Controller
          return response()->json($article, 200);
      }
 
-     public function showBySlug($slug)
+     public function showBySlug(Request $request, $slug)
      {
          $article = Article::with('categories')->where('slug', $slug)->firstOrFail();
          $article = DateService::formatArticleDate($article);
+
+
+
+
+
+        //  $data = [
+        //     // 'user_id' => $request->user_id,
+        //     'article_id' => $article->id,
+        //     'browser' => $request->header('User-Agent'),
+        //     'ip_address' => $request->ip(),
+        //     'location' => $request->location,
+        //     'mac_address' => $request->mac_address,
+        //     'date' => now()->toDateString(),
+        //     'month' => now()->month,
+        //     'year' => now()->year,
+        //     'unique_reader_id' => $request->unique_reader_id,
+        // ];
+
+        // $readArticle = ReadArticleService::createReadArticle($data);
+
+
+
+
+
+
+
 
 
 
