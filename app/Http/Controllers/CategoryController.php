@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 class CategoryController extends Controller
 {
     // Get list of categories with their parent categories
@@ -19,13 +21,24 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'label' => 'nullable',
-            'slug' => 'required|unique:categories',
+            // 'slug' => 'required|unique:categories',
             'parent_id' => 'nullable|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
+
+
+
+               // Generate slug from label
+               $slug = Str::slug($request->label);
+
+               // Check if the slug is unique, append a number if necessary
+               $count = Category::where('slug', $slug)->count();
+               if ($count > 0) {
+                   $slug .= '-' . ($count + 1);
+               }
 
 
 
@@ -38,6 +51,7 @@ class CategoryController extends Controller
             $filePath = $file->storeAs('category/banner', $fileName, 'protected');
             $requestdata['banner'] = url('files/'.$filePath);
         }
+        $requestdata['slug'] = $slug;
 
         $category = Category::create($requestdata);
 
