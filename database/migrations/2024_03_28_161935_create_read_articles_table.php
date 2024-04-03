@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('read_articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreignId('article_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('browser')->nullable();
             $table->ipAddress('ip_address')->nullable();
