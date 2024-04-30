@@ -203,6 +203,16 @@ class ArticleController extends Controller
         $articles = ContentService::sortArticleContents($articles);
        return ArticleResource::collection($articles);
      }
+
+     function getArticlesByDate($date) {
+        $date = $date;
+        $perPage = 15;
+
+        $articles = Article::getByDate($date, $perPage);
+        $articles = DateService::formatArticleDates($articles);
+        $articles = ContentService::sortArticleContents($articles);
+       return ArticleResource::collection($articles);
+     }
      function getLatestarticles() {
 
         $latestArticles = Article::latestArticles(10);

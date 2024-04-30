@@ -127,6 +127,8 @@ Route::delete('/videos/{video}', [VideoController::class, 'destroy']);
     Route::get('/article/{slug}', [ArticleController::class, 'showBySlug']);
     Route::get('/articles/list/{slug}', [ArticleController::class, 'getArticlesBySlug']);
 
+    Route::get('/articles/date/{date}', [ArticleController::class, 'getArticlesByDate']);
+
     Route::get('/all/latest/articles', [ArticleController::class, 'getLatestarticles']);
     Route::get('/all/related/articles/{articleSlug}', [ArticleController::class, 'getRelatedArticles']);
 

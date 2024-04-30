@@ -48,6 +48,16 @@ class Article extends Model
         })->orderBy('id','desc')->paginate($perPage);
     }
 
+
+    public static function getByDate($date, $perPage = 10)
+    {
+        return static::whereDate('date', $date)
+                     ->orderBy('id', 'desc')
+                     ->paginate($perPage);
+    }
+
+
+
     public static function latestArticles($limit = 10)
     {
         return static::latest()->take($limit)->orderBy('id','desc')->get();
