@@ -34,3 +34,17 @@ function month_name_en_to_bn_text($name)
     $bn = array('জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'অগাস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর');
     return str_replace($en, $bn, $name);
 }
+
+ function extractUrlFromIframe($iframe)
+{
+    $dom = new \DOMDocument();
+    @$dom->loadHTML($iframe);
+
+    $iframes = $dom->getElementsByTagName('iframe');
+    if ($iframes->length > 0) {
+        $src = $iframes->item(0)->getAttribute('src');
+        return $src;
+    }
+
+    return $iframe;
+}

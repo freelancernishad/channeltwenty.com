@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\api\UserController;
@@ -105,7 +106,11 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
 
 
-
+Route::get('/videos', [VideoController::class, 'index']);
+Route::post('/videos', [VideoController::class, 'store']);
+Route::post('/videos/{video}', [VideoController::class, 'update']);
+Route::get('/videos/{video}', [VideoController::class, 'show']);
+Route::delete('/videos/{video}', [VideoController::class, 'destroy']);
 
 
 
@@ -129,14 +134,16 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
     // Comment routes
     Route::get('/comments', [CommentController::class, 'index']);
     Route::get('/comments/{id}', [CommentController::class, 'show']);
-
+    
 
     // Category routes
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{id}', [CategoryController::class, 'show']);
     Route::get('/categories/{id}/subcategories', [CategoryController::class, 'getSubcategories']);
-
-
+    
+    
+    Route::get('/videos/list/{categoryname}', [VideoController::class, 'listByCategory']);
+    Route::get('/video/{slug}', [VideoController::class, 'showBySlug']);
 
 
 
