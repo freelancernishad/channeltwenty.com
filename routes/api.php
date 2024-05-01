@@ -144,6 +144,7 @@ Route::delete('/videos/{video}', [VideoController::class, 'destroy']);
     Route::get('/categories/{id}/subcategories', [CategoryController::class, 'getSubcategories']);
     
     
+    Route::get('/video/all/list', [VideoController::class, 'allListByCategory']);
     Route::get('/videos/list/{categoryname}', [VideoController::class, 'listByCategory']);
     Route::get('/video/{slug}', [VideoController::class, 'showBySlug']);
 

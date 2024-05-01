@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class VideoController extends Controller
 {
 
-    
+
     public function index()
     {
         $videos = Video::orderBy('id','desc')->paginate(20);
@@ -17,13 +17,25 @@ class VideoController extends Controller
     }
 
 
+    public function allListByCategory(Request $request)
+    {
+        $videos = Video::groupBy('category_name')
+        ->select('category_name')
+        ->with(['categoryVideos' => function ($query) {
+            $query->limit(5);
+        }])
+        ->get();
+
+        return response()->json($videos);
+    }
+
     public function listByCategory(Request $request, $categoryname)
     {
         $videos = Video::where('category_name',$categoryname)->orderBy('id','desc')->paginate(18);
         return response()->json($videos);
     }
 
-  
+
 
     public function store(Request $request)
     {
@@ -38,7 +50,7 @@ class VideoController extends Controller
         }
 
 
-         
+
 
 
         $video = Video::create([
@@ -59,7 +71,7 @@ class VideoController extends Controller
     public function showBySlug(Request $request, $slug)
     {
         $video = Video::where('slug',$slug)->first();
-       
+
         return response()->json($video);
     }
 
