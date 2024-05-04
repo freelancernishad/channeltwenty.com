@@ -109,7 +109,11 @@ class ArticleController extends Controller
 
            $article = Article::findOrFail($id);
            // Check if the authenticated user owns the article
-           if ($article->user_id !== $user->id) {
+
+        //    if ($article->user_id !== $user->id) {
+        //        return response()->json(['error' => 'Unauthorized'], 401);
+        //    }
+           if (!$user) {
                return response()->json(['error' => 'Unauthorized'], 401);
            }
 
