@@ -116,7 +116,13 @@ class ArticleController extends Controller
 
 
            $article->title = $request->title;
-           $article->author = $request->author;
+
+           if(!$article->author){
+
+               $article->author = $user->name;
+           }
+
+
            $article->content = $request->content;
 
 
