@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class VideoController extends Controller
@@ -19,10 +20,21 @@ class VideoController extends Controller
 
     public function allListByCategory(Request $request)
     {
-        $videos = Video::groupBy('category_name')
+        $categories = DB::table('videos')
         ->select('category_name')
-        ->with(['categoryVideos'])
+        ->groupBy('category_name')
         ->get();
+
+    $videos = [];
+    foreach ($categories as $category) {
+        $categoryVideos = Video::where('category_name', $category->category_name)
+            ->take(3)
+            ->get();
+        $videos[] = [
+            'category_name' => $category->category_name,
+            'category_videos' => $categoryVideos
+        ];
+    }
 
         return response()->json($videos);
     }
