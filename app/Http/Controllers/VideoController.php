@@ -21,9 +21,7 @@ class VideoController extends Controller
     {
         $videos = Video::groupBy('category_name')
         ->select('category_name')
-        ->with(['categoryVideos' => function ($query) {
-            $query->limit(5);
-        }])
+        ->with(['categoryVideos'])
         ->get();
 
         return response()->json($videos);
