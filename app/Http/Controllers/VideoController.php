@@ -28,6 +28,7 @@ class VideoController extends Controller
     $videos = [];
     foreach ($categories as $category) {
         $categoryVideos = Video::where('category_name', $category->category_name)
+        ->orderBy('id', 'desc')
             ->take(3)
             ->get();
         $videos[] = [
