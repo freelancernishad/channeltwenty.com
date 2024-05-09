@@ -22,6 +22,7 @@ use App\Http\Controllers\api\OrganizationController;
 use App\Http\Controllers\Auth\admins\AdminAuthController;
 use App\Http\Controllers\Auth\students\StudentAuthController;
 use App\Http\Controllers\Auth\orgs\OrganizationAuthController;
+use App\Http\Controllers\VisitorController;
 
 
 
@@ -173,7 +174,8 @@ Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy
 
     Route::get('advertisements', [AdvertisementController::class, 'index']);
 
-
+    Route::get('/visitors', [VisitorController::class, 'index']);
+    Route::get('/visitors/reports', [VisitorController::class, 'generateReports']);
 
 
 //// organization auth
