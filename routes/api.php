@@ -4,6 +4,7 @@ use App\Models\Article;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ArticleController;
@@ -120,6 +121,15 @@ Route::post('/social-links/{idOrPlatform}', [SocialLinkController::class, 'updat
 Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destroy']);
 
 
+Route::get('/pages', [PageController::class, 'index']);
+Route::post('/pages', [PageController::class, 'store']);
+Route::get('/pages/{page}', [PageController::class, 'show']);
+Route::post('/pages/{page}', [PageController::class, 'update']);
+Route::delete('/pages/{page}', [PageController::class, 'destroy']);
+
+
+
+
 });
 
 
@@ -157,7 +167,7 @@ Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destr
     Route::get('/social-links', [SocialLinkController::class, 'index']);
     Route::get('/social-links/{platform}', [SocialLinkController::class, 'showByPlatform']);
 
-
+    Route::get('/pages/slug/{slug}', [PageController::class, 'showBySlug']);
 
 
 
