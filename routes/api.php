@@ -12,6 +12,7 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\api\AdminController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\api\StudentController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Auth\users\AuthController;
@@ -114,6 +115,10 @@ Route::delete('/videos/{video}', [VideoController::class, 'destroy']);
 
 
 
+Route::post('/social-links', [SocialLinkController::class, 'store']);
+Route::post('/social-links/{idOrPlatform}', [SocialLinkController::class, 'update']);
+Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destroy']);
+
 
 });
 
@@ -136,20 +141,21 @@ Route::delete('/videos/{video}', [VideoController::class, 'destroy']);
     // Comment routes
     Route::get('/comments', [CommentController::class, 'index']);
     Route::get('/comments/{id}', [CommentController::class, 'show']);
-    
+
 
     // Category routes
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{id}', [CategoryController::class, 'show']);
     Route::get('/categories/{id}/subcategories', [CategoryController::class, 'getSubcategories']);
-    
-    
+
+
     Route::get('/video/all/list', [VideoController::class, 'allListByCategory']);
     Route::get('/videos/list/{categoryname}', [VideoController::class, 'listByCategory']);
     Route::get('/video/{slug}', [VideoController::class, 'showBySlug']);
 
 
-
+    Route::get('/social-links', [SocialLinkController::class, 'index']);
+    Route::get('/social-links/{platform}', [SocialLinkController::class, 'showByPlatform']);
 
 
 
