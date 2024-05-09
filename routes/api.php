@@ -15,6 +15,7 @@ use App\Http\Controllers\api\AdminController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\api\StudentController;
+use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Auth\users\AuthController;
 use App\Http\Controllers\api\OrganizationController;
@@ -127,7 +128,8 @@ Route::get('/pages/{page}', [PageController::class, 'show']);
 Route::post('/pages/{page}', [PageController::class, 'update']);
 Route::delete('/pages/{page}', [PageController::class, 'destroy']);
 
-
+Route::post('advertisements', [AdvertisementController::class, 'store']);
+Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy']);
 
 
 });
@@ -169,6 +171,7 @@ Route::delete('/pages/{page}', [PageController::class, 'destroy']);
 
     Route::get('/pages/slug/{slug}', [PageController::class, 'showBySlug']);
 
+    Route::get('advertisements', [AdvertisementController::class, 'index']);
 
 
 
