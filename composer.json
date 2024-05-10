@@ -29,7 +29,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/helper/functions.php"
+            "app/helper/functions.php",
+            "app/helper/imgur.php"
         ]
     },
     "autoload-dev": {

@@ -49,6 +49,11 @@ class ArticleController extends Controller
        public function store(Request $request)
        {
 
+
+        return getUrlFromImgTag($request->content);
+
+        return $request->all();
+
            $validator = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
