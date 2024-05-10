@@ -2,24 +2,27 @@
 
 
 function getUrlFromImgTag($html_content='') {
-$doc = new \DOMDocument();
-$doc->loadHTML($html_content);
+  $doc = new DOMDocument();
+  $doc->loadHTML($html_content);
 
-$image_tags = $doc->getElementsByTagName('img');
+  $image_tags = $doc->getElementsByTagName('img');
 
+  foreach ($image_tags as $tag) {
+     $src = $tag->getAttribute('src');
+     if (strpos($src, 'data:image') === 0) {
+          $base64Data = explode(',', $src);
+          $base64ImageSrcArray = end($base64Data);
+          $imageUrl = imagurUpload($base64ImageSrcArray);
+          $tag->setAttribute('src', $imageUrl);
+      }
+  }
 
+  $modified_html = '';
+  foreach ($doc->getElementsByTagName('body')->item(0)->childNodes as $node) {
+      $modified_html .= $doc->saveHTML($node);
+  }
 
-foreach ($image_tags as $tag) {
-   $src = $tag->getAttribute('src');
-   if (strpos($src, 'data:image') === 0) {
-    $base64Data = explode(',', $src);
-    $base64ImageSrcArray = end($base64Data); 
-    $imageUrl = imagurUpload($base64ImageSrcArray);
-
-    }
-}
-
-
+  return $modified_html;
 }
 
 

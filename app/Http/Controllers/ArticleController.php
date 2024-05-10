@@ -50,9 +50,9 @@ class ArticleController extends Controller
        {
 
 
-        return getUrlFromImgTag($request->content);
 
-        return $request->all();
+
+
 
            $validator = Validator::make($request->all(), [
             'title' => 'required',
@@ -84,7 +84,9 @@ class ArticleController extends Controller
         $article->setSlugAttribute($article->title);
         $article->author = $request->author; // Set other attributes
         $article->date = date('Y-m-d H:i:s'); // Set other attributes
-        $article->content = $request->content;
+
+        $content =  getUrlFromImgTag($request->content);
+        $article->content = $content;
         $article->banner = url('files/'.$filePath);
         $article->user_id = $user->id;
         $article->save();
