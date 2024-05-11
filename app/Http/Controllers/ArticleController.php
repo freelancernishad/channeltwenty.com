@@ -86,7 +86,7 @@ class ArticleController extends Controller
         $article->date = date('Y-m-d H:i:s'); // Set other attributes
 
         $content =  getUrlFromImgTag($request->content);
-        $article->content = $content;
+        $article->content = $request->content;
         $article->banner = url('files/'.$filePath);
         $article->user_id = $user->id;
         $article->save();
