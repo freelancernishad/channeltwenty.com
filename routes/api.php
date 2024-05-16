@@ -12,14 +12,15 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LiveVideoController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\api\StudentController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\VideoCategoryController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Auth\users\AuthController;
 use App\Http\Controllers\api\OrganizationController;
-use App\Http\Controllers\VideoCategoryController;
 use App\Http\Controllers\Auth\admins\AdminAuthController;
 use App\Http\Controllers\Auth\students\StudentAuthController;
 use App\Http\Controllers\Auth\orgs\OrganizationAuthController;
@@ -140,6 +141,15 @@ Route::post('advertisements', [AdvertisementController::class, 'store']);
 Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy']);
 
 
+
+Route::get('/live_videos', [LiveVideoController::class, 'index']);
+Route::post('/live_videos', [LiveVideoController::class, 'store']);
+Route::get('/live_videos/{id}', [LiveVideoController::class, 'show']);
+Route::post('/live_videos/{id}', [LiveVideoController::class, 'update']);
+Route::delete('/live_videos/{id}', [LiveVideoController::class, 'destroy']);
+
+Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo']);
+
 });
 
 
@@ -183,6 +193,9 @@ Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy
 
     Route::get('/visitors', [VisitorController::class, 'index']);
     Route::get('/visitors/reports', [VisitorController::class, 'generateReports']);
+    Route::get('/live_video/last', [LiveVideoController::class, 'getLastVideo']);
+
+
 
 
 //// organization auth
