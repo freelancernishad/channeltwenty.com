@@ -48,7 +48,14 @@ class VideoController extends Controller
     ];
 
 
-
+    // Get 3 most popular videos
+    $popularVideos = Video::orderBy('views', 'desc')
+                        ->take(3)
+                        ->get();
+    $videos[] = [
+        'category_name' => "popular",
+        'category_videos' => $popularVideos
+    ];
 
 
 
@@ -57,8 +64,26 @@ class VideoController extends Controller
 
     public function listByCategory(Request $request, $categoryname)
     {
-        $videos = Video::where('category_name',$categoryname)->orderBy('id','desc')->paginate(18);
+
+
+        if ($categoryname === 'latest') {
+            // Get 3 latest videos
+            $videos = Video::orderBy('updated_at', 'desc')
+                            ->paginate(18);
+        } elseif ($categoryname === 'popular') {
+            // Get 3 most popular videos
+            $videos = Video::orderBy('views', 'desc')
+                            ->paginate(18);
+        } else {
+            // Get videos for the specified category
+            $videos = Video::where('category_name', $categoryname)
+                            ->orderBy('id', 'desc')
+                            ->paginate(18);
+        }
+
         return response()->json($videos);
+
+
     }
 
 
