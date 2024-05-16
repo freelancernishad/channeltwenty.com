@@ -89,8 +89,13 @@ class VideoController extends Controller
         return response()->json($video, 201);
     }
 
+
+
+
+
     public function show(Video $video)
     {
+    //    return $youtubeViews = $video->youtube_views;
         return response()->json($video);
     }
 
