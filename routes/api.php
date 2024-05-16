@@ -9,9 +9,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\api\AdminController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SocialLinkController;
 use App\Http\Controllers\api\StudentController;
@@ -19,10 +19,10 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Auth\users\AuthController;
 use App\Http\Controllers\api\OrganizationController;
+use App\Http\Controllers\VideoCategoryController;
 use App\Http\Controllers\Auth\admins\AdminAuthController;
 use App\Http\Controllers\Auth\students\StudentAuthController;
 use App\Http\Controllers\Auth\orgs\OrganizationAuthController;
-use App\Http\Controllers\VisitorController;
 
 
 
@@ -107,6 +107,13 @@ Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+
+Route::get('video-categories', [VideoCategoryController::class, 'index']);
+Route::post('video-categories', [VideoCategoryController::class, 'store']);
+Route::get('video-categories/{videoCategory}', [VideoCategoryController::class, 'show']);
+Route::post('video-categories/{videoCategory}', [VideoCategoryController::class, 'update']);
+Route::delete('video-categories/{videoCategory}', [VideoCategoryController::class, 'destroy']);
 
 
 

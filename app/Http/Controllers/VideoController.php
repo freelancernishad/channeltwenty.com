@@ -37,6 +37,21 @@ class VideoController extends Controller
         ];
     }
 
+
+    $latestVideos = Video::orderBy('updated_at', 'desc')
+    ->take(3)
+    ->get();
+
+    $videos[] = [
+    'category_name' => "latest",
+    'category_videos' => $latestVideos
+    ];
+
+
+
+
+
+
         return response()->json($videos);
     }
 
