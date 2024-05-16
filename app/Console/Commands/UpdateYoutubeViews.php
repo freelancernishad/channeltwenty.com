@@ -18,7 +18,7 @@ class UpdateYoutubeViews extends Command
 
     public function handle()
     {
-        Log::info('YouTube views update command executed.');
+        // Log::info('YouTube views update command executed.');
 
         $videos = Video::all();
         foreach ($videos as $video) {
@@ -30,7 +30,7 @@ class UpdateYoutubeViews extends Command
                     $views = $this->getYouTubeViews($videoId);
                     if ($views !== null) {
                         $video->update(['views' => $views]);
-                        Log::info("Views for video ID {$video->id} updated to $views");
+                        // Log::info("Views for video ID {$video->id} updated to $views");
                     }
                 }
             }
