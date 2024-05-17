@@ -43,7 +43,7 @@ class VideoController extends Controller
     ->get();
 
     $videos[] = [
-    'category_name' => "latest",
+    'category_name' => "Latest",
     'category_videos' => $latestVideos
     ];
 
@@ -53,7 +53,7 @@ class VideoController extends Controller
                         ->take(3)
                         ->get();
     $videos[] = [
-        'category_name' => "popular",
+        'category_name' => "Popular",
         'category_videos' => $popularVideos
     ];
 
@@ -66,11 +66,11 @@ class VideoController extends Controller
     {
 
 
-        if ($categoryname === 'latest') {
+        if ($categoryname === 'Latest') {
             // Get 3 latest videos
             $videos = Video::orderBy('updated_at', 'desc')
                             ->paginate(18);
-        } elseif ($categoryname === 'popular') {
+        } elseif ($categoryname === 'Popular') {
             // Get 3 most popular videos
             $videos = Video::orderBy('views', 'desc')
                             ->paginate(18);
