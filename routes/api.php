@@ -110,7 +110,6 @@ Route::post('/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
 
-Route::get('video-categories', [VideoCategoryController::class, 'index']);
 Route::post('video-categories', [VideoCategoryController::class, 'store']);
 Route::get('video-categories/{videoCategory}', [VideoCategoryController::class, 'show']);
 Route::post('video-categories/{videoCategory}', [VideoCategoryController::class, 'update']);
@@ -179,6 +178,7 @@ Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo'])
     Route::get('/categories/{id}/subcategories', [CategoryController::class, 'getSubcategories']);
 
 
+    Route::get('video-categories', [VideoCategoryController::class, 'index']);
     Route::get('/video/all/list', [VideoController::class, 'allListByCategory']);
     Route::get('/videos/list/{categoryname}', [VideoController::class, 'listByCategory']);
     Route::get('/video/{slug}', [VideoController::class, 'showBySlug']);
