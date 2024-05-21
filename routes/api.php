@@ -20,6 +20,7 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\VideoCategoryController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\Auth\users\AuthController;
+use App\Http\Controllers\SelectedArticleController;
 use App\Http\Controllers\api\OrganizationController;
 use App\Http\Controllers\Auth\admins\AdminAuthController;
 use App\Http\Controllers\Auth\students\StudentAuthController;
@@ -148,6 +149,22 @@ Route::post('/live_videos/{id}', [LiveVideoController::class, 'update']);
 Route::delete('/live_videos/{id}', [LiveVideoController::class, 'destroy']);
 
 Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo']);
+
+
+
+
+Route::get('selected-articles', [SelectedArticleController::class, 'index']);
+Route::post('selected-articles', [SelectedArticleController::class, 'store']);
+Route::get('selected-articles/{id}', [SelectedArticleController::class, 'show']);
+Route::post('selected-articles/{id}', [SelectedArticleController::class, 'update']);
+Route::delete('selected-articles/{id}', [SelectedArticleController::class, 'destroy']);
+Route::delete('selected-article/delete-by-date', [SelectedArticleController::class, 'deleteByDate']);
+Route::get('selected-articles/{id}/related', [SelectedArticleController::class, 'relatedArticles']);
+
+
+Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate']);
+Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate']);
+
 
 });
 
