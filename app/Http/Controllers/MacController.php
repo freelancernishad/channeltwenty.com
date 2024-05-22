@@ -10,11 +10,11 @@ class MacController extends Controller
 {
     public function getMacAddress()
     {
-        // echo shell_exec('which python3');
+        echo shell_exec('which python3');
         // return;
   // Specify the full path to the Python executable
-//   $pythonCommand = 'C:\Users\User\AppData\Local\Programs\Python\Python312\python.exe'; 
-  $pythonCommand = '/bin/python3\python.exe'; 
+//   $pythonCommand = 'C:\Users\User\AppData\Local\Programs\Python\Python312\python.exe';
+  $pythonCommand = '/bin/python3\python.exe';
 
   // Check if Python is installed
   $process = new Process([$pythonCommand, '--version']);
