@@ -4,6 +4,7 @@ use App\Models\Article;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MacController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\VideoController;
@@ -171,7 +172,8 @@ Route::get('selected-article/filter-by-date', [SelectedArticleController::class,
 });
 
 
-
+Route::get('/get-mac', [MacController::class, 'getMacAddress']);
+Route::get('/check-python', [MacController::class, 'checkPython']);
 
     // Article routes
     Route::get('/articles', [ArticleController::class, 'index']);
