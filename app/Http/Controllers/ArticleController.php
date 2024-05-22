@@ -274,4 +274,10 @@ class ArticleController extends Controller
      }
 
 
+     function getlistByAuthor(Request $request){
+        $authorName = $request->name;
+        $articlesByAuthor = Article::getByAuthorName($authorName);
+        return $articlesByAuthor;
+     }
+
 }

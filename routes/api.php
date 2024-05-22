@@ -100,6 +100,8 @@ Route::get('/articles/{id}', [ArticleController::class, 'show']);
 Route::post('/articles/{id}', [ArticleController::class, 'update']);
 Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
+Route::get('/article/list/author', [ArticleController::class, 'getlistByAuthor']);
+
 // Comment routes
 Route::get('/comments', [CommentController::class, 'index']);
 Route::get('/comments/{id}', [CommentController::class, 'show']);

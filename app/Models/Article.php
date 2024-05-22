@@ -97,5 +97,26 @@ class Article extends Model
     }
 
 
+    public static function getByAuthorName($authorName, $perPage = 10)
+{
+    // Find users whose names partially match the provided author name
+    $users = User::where('name', 'like', '%' . $authorName . '%')->get();
+
+    if ($users->isNotEmpty()) {
+        // Extract user IDs from the collection of users
+        $userIds = $users->pluck('id')->toArray();
+
+        // Filter articles by user IDs
+        return static::whereIn('user_id', $userIds)
+                     ->orderBy('id', 'desc')
+                     ->paginate($perPage);
+    } else {
+        // If no matching users found, return an empty result
+        return static::where('author', $authorName)
+        ->orderBy('id', 'desc')
+        ->paginate($perPage);
+    }
+}
+
 
 }
