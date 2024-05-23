@@ -4,21 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CheckPermission
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle($request, Closure $next, $permission)
+    public function handle(Request $request, Closure $next, $routeName)
     {
-        if (!auth()->check() || !auth()->user()->hasPermission($permission)) {
-            abort(403, 'Unauthorized');
+        // Check if the user has the specified permission for the route
+        if ($request->user()->hasPermission($routeName)) {
+            return $next($request);
         }
 
-        return $next($request);
+        // If the user doesn't have the required permission, return 403 Forbidden
+        return response()->json(['error' => 'Permission denied.'], 403);
     }
 }

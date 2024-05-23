@@ -74,84 +74,87 @@ Route::post('/user/login', [AuthController::class, 'login'])->name('login');
 Route::post('/user/check/login', [AuthController::class, 'checkTokenExpiration'])->name('checklogin');
 Route::post('/user/check-token', [AuthController::class, 'checkToken']);
 Route::post('/user/register', [AuthController::class, 'register']);
+
+
 Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/user/logout', [AuthController::class, 'logout'])->name('user.logout');
 
     // Routes for user registration, update, delete, and show
     Route::prefix('users')->group(function () {
-        Route::put('{id}', [UserController::class, 'update'])->name('users.update');       // Update user by ID
-        Route::delete('{id}', [UserController::class, 'delete'])->name('users.delete');    // Delete user by ID
-        Route::get('{id}', [UserController::class, 'show'])->name('users.show');          // Show user details by ID
+        Route::put('{id}', [UserController::class, 'update'])->name('users.update')->middleware('checkPermission:users.update');
+        Route::delete('{id}', [UserController::class, 'delete'])->name('users.delete')->middleware('checkPermission:users.delete');
+        Route::get('{id}', [UserController::class, 'show'])->name('users.show')->middleware('checkPermission:users.show');
     });
-    Route::post('users/change-password', [UserController::class, 'changePassword'])->name('users.change_password');
+    Route::post('users/change-password', [UserController::class, 'changePassword'])->name('users.change_password')->middleware('checkPermission:users.change_password');
     Route::get('/user-access', function (Request $request) {
         return 'user access';
-    })->name('user.access');
+    })->name('user.access')->middleware('checkPermission:user.access');
 
     // Add names to other routes
-    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
-    Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
-    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store')->middleware('checkPermission:articles.store');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show')->middleware('checkPermission:articles.show');
+    Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update')->middleware('checkPermission:articles.update');
+    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy')->middleware('checkPermission:articles.destroy');
 
-    Route::get('/article/list/author', [ArticleController::class, 'getlistByAuthor'])->name('articles.list_author');
+    // Add names to other routes
+    Route::get('/article/list/author', [ArticleController::class, 'getlistByAuthor'])->name('articles.list_author')->middleware('checkPermission:articles.list_author');
 
     // Comment routes
-    Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
-    Route::get('/comments/{id}', [CommentController::class, 'show'])->name('comments.show');
-    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::get('/comments', [CommentController::class, 'index'])->name('comments.index')->middleware('checkPermission:comments.index');
+    Route::get('/comments/{id}', [CommentController::class, 'show'])->name('comments.show')->middleware('checkPermission:comments.show');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('checkPermission:comments.destroy');
 
     // Add names to other routes
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store')->middleware('checkPermission:categories.store');
+    Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update')->middleware('checkPermission:categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('checkPermission:categories.destroy');
 
-    Route::post('video-categories', [VideoCategoryController::class, 'store'])->name('video_categories.store');
-    Route::get('video-categories/{videoCategory}', [VideoCategoryController::class, 'show'])->name('video_categories.show');
-    Route::post('video-categories/{videoCategory}', [VideoCategoryController::class, 'update'])->name('video_categories.update');
-    Route::delete('video-categories/{videoCategory}', [VideoCategoryController::class, 'destroy'])->name('video_categories.destroy');
-
-    // Add names to other routes
-    Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
-    Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
-    Route::post('/videos/{video}', [VideoController::class, 'update'])->name('videos.update');
-    Route::get('/videos/{video}', [VideoController::class, 'show'])->name('videos.show');
-    Route::delete('/videos/{video}', [VideoController::class, 'destroy'])->name('videos.destroy');
+    Route::post('video-categories', [VideoCategoryController::class, 'store'])->name('video_categories.store')->middleware('checkPermission:video_categories.store');
+    Route::get('video-categories/{videoCategory}', [VideoCategoryController::class, 'show'])->name('video_categories.show')->middleware('checkPermission:video_categories.show');
+    Route::post('video-categories/{videoCategory}', [VideoCategoryController::class, 'update'])->name('video_categories.update')->middleware('checkPermission:video_categories.update');
+    Route::delete('video-categories/{videoCategory}', [VideoCategoryController::class, 'destroy'])->name('video_categories.destroy')->middleware('checkPermission:video_categories.destroy');
 
     // Add names to other routes
-    Route::post('/social-links', [SocialLinkController::class, 'store'])->name('social_links.store');
-    Route::post('/social-links/{idOrPlatform}', [SocialLinkController::class, 'update'])->name('social_links.update');
-    Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destroy'])->name('social_links.destroy');
+    Route::get('/videos', [VideoController::class, 'index'])->name('videos.index')->middleware('checkPermission:videos.index');
+    Route::post('/videos', [VideoController::class, 'store'])->name('videos.store')->middleware('checkPermission:videos.store');
+    Route::post('/videos/{video}', [VideoController::class, 'update'])->name('videos.update')->middleware('checkPermission:videos.update');
+    Route::get('/videos/{video}', [VideoController::class, 'show'])->name('videos.show')->middleware('checkPermission:videos.show');
+    Route::delete('/videos/{video}', [VideoController::class, 'destroy'])->name('videos.destroy')->middleware('checkPermission:videos.destroy');
 
     // Add names to other routes
-    Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
-    Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
-    Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show');
-    Route::post('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
-    Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
-
-    Route::post('advertisements', [AdvertisementController::class, 'store'])->name('advertisements.store');
-    Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy'])->name('advertisements.destroy');
+    Route::post('/social-links', [SocialLinkController::class, 'store'])->name('social_links.store')->middleware('checkPermission:social_links.store');
+    Route::post('/social-links/{idOrPlatform}', [SocialLinkController::class, 'update'])->name('social_links.update')->middleware('checkPermission:social_links.update');
+    Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destroy'])->name('social_links.destroy')->middleware('checkPermission:social_links.destroy');
 
     // Add names to other routes
-    Route::get('/live_videos', [LiveVideoController::class, 'index'])->name('live_videos.index');
-    Route::post('/live_videos', [LiveVideoController::class, 'store'])->name('live_videos.store');
-    Route::get('/live_videos/{id}', [LiveVideoController::class, 'show'])->name('live_videos.show');
-    Route::post('/live_videos/{id}', [LiveVideoController::class, 'update'])->name('live_videos.update');
-    Route::delete('/live_videos/{id}', [LiveVideoController::class, 'destroy'])->name('live_videos.destroy');
+    Route::get('/pages', [PageController::class, 'index'])->name('pages.index')->middleware('checkPermission:pages.index');
+    Route::post('/pages', [PageController::class, 'store'])->name('pages.store')->middleware('checkPermission:pages.store');
+    Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show')->middleware('checkPermission:pages.show');
+    Route::post('/pages/{page}', [PageController::class, 'update'])->name('pages.update')->middleware('checkPermission:pages.update');
+    Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy')->middleware('checkPermission:pages.destroy');
 
-    Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo'])->name('live_video.last');
+    Route::post('advertisements', [AdvertisementController::class, 'store'])->name('advertisements.store')->middleware('checkPermission:advertisements.store');
+    Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy'])->name('advertisements.destroy')->middleware('checkPermission:advertisements.destroy');
 
-    Route::get('selected-articles', [SelectedArticleController::class, 'index'])->name('selected_articles.index');
-    Route::post('selected-articles', [SelectedArticleController::class, 'store'])->name('selected_articles.store');
-    Route::get('selected-articles/{id}', [SelectedArticleController::class, 'show'])->name('selected_articles.show');
-    Route::post('selected-articles/{id}', [SelectedArticleController::class, 'update'])->name('selected_articles.update');
-    Route::delete('selected-articles/{id}', [SelectedArticleController::class, 'destroy'])->name('selected_articles.destroy');
-    Route::delete('selected-article/delete-by-date', [SelectedArticleController::class, 'deleteByDate'])->name('selected_articles.delete_by_date');
-    Route::get('selected-articles/{id}/related', [SelectedArticleController::class, 'relatedArticles'])->name('selected_articles.related');
+    // Add names to other routes
+    Route::get('/live_videos', [LiveVideoController::class, 'index'])->name('live_videos.index')->middleware('checkPermission:live_videos.index');
+    Route::post('/live_videos', [LiveVideoController::class, 'store'])->name('live_videos.store')->middleware('checkPermission:live_videos.store');
+    Route::get('/live_videos/{id}', [LiveVideoController::class, 'show'])->name('live_videos.show')->middleware('checkPermission:live_videos.show');
+    Route::post('/live_videos/{id}', [LiveVideoController::class, 'update'])->name('live_videos.update')->middleware('checkPermission:live_videos.update');
+    Route::delete('/live_videos/{id}', [LiveVideoController::class, 'destroy'])->name('live_videos.destroy')->middleware('checkPermission:live_videos.destroy');
 
-    Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate'])->name('selected_articles.update_multiple_by_date');
-    Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate'])->name('selected_articles.filter_by_date');
+    Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo'])->name('live_video.last')->middleware('checkPermission:live_video.last');
+
+    Route::get('selected-articles', [SelectedArticleController::class, 'index'])->name('selected_articles.index')->middleware('checkPermission:selected_articles.index');
+    Route::post('selected-articles', [SelectedArticleController::class, 'store'])->name('selected_articles.store')->middleware('checkPermission:selected_articles.store');
+    Route::get('selected-articles/{id}', [SelectedArticleController::class, 'show'])->name('selected_articles.show')->middleware('checkPermission:selected_articles.show');
+    Route::post('selected-articles/{id}', [SelectedArticleController::class, 'update'])->name('selected_articles.update')->middleware('checkPermission:selected_articles.update');
+    Route::delete('selected-articles/{id}', [SelectedArticleController::class, 'destroy'])->name('selected_articles.destroy')->middleware('checkPermission:selected_articles.destroy');
+    Route::delete('selected-article/delete-by-date', [SelectedArticleController::class, 'deleteByDate'])->name('selected_articles.delete_by_date')->middleware('checkPermission:selected_articles.delete_by_date');
+    Route::get('selected-articles/{id}/related', [SelectedArticleController::class, 'relatedArticles'])->name('selected_articles.related')->middleware('checkPermission:selected_articles.related');
+
+    Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate'])->name('selected_articles.update_multiple_by_date')->middleware('checkPermission:selected_articles.update_multiple_by_date');
+    Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate'])->name('selected_articles.filter_by_date')->middleware('checkPermission:selected_articles.filter_by_date');
 });
 
 
