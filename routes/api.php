@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Article;
+use App\Models\Permission;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,68 @@ use App\Http\Controllers\Auth\orgs\OrganizationAuthController;
 // Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+
+
+
+Route::get('get/all/route/name', function () {
+// Get all routes
+$routes = Route::getRoutes();
+
+// Iterate through routes
+foreach ($routes as $route) {
+    // Get route action
+    $action = $route->getAction();
+   
+
+    // Check if middleware is defined in the action
+    if (isset($action['middleware'])) {
+        $hasCheckPermission = false;
+        foreach ($action['middleware'] as $middleware) {
+            if (strpos($middleware, 'checkPermission') !== false) {
+                $hasCheckPermission = true;
+            }
+        }
+
+   
+   
+        // Check if the middleware is 'checkPermission'
+        if ($hasCheckPermission) {
+
+
+
+            // Get route name
+            $routeName = $route->getName();
+          
+            
+            // Check if route has a name
+            if ($routeName) {
+                // Check if permission already exists
+                $existingPermission = Permission::where('path', $routeName)->first();
+                
+                // If permission doesn't exist, create it
+                if (!$existingPermission) {
+                    Permission::create([
+                        'name' => $routeName,
+                        'path' => $routeName,
+                        // Add other attributes like element, permission, description if needed
+                    ]);
+                }
+            }
+
+
+
+
+
+
+        }
+    }
+}
+});
+
+
+
+
 Route::get('/update/slug', [ArticleController::class, 'updateSlugs']);
 
 
@@ -51,6 +114,7 @@ Route::apiResource('roles', RoleController::class);
 Route::apiResource('permissions', PermissionController::class);
 Route::post('get/permissions/{roleName}', [RoleController::class, 'getPermissionsByRoleName']);
 Route::post('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'attachPermission']);
+Route::post('roles/{roleId}/permissions', [RolePermissionController::class, 'addPermissionsToRole']);
 Route::delete('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'detachPermission']);
 
 
@@ -155,6 +219,15 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate'])->name('selected_articles.update_multiple_by_date')->middleware('checkPermission:selected_articles.update_multiple_by_date');
     Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate'])->name('selected_articles.filter_by_date')->middleware('checkPermission:selected_articles.filter_by_date');
+
+
+
+
+
+
+
+
+
 });
 
 

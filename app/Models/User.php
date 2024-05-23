@@ -130,7 +130,7 @@ public function permissions()
          
 
             // Log:info($permission->name === $routeName && $permission->permission);
-            return $permission->name === $routeName && $permission->permission;
+            return $permission->path === $routeName && $permission->permission;
         });
 
 

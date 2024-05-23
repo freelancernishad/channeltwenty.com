@@ -48,3 +48,17 @@ function month_name_en_to_bn_text($name)
 
     return $iframe;
 }
+
+
+function routeUsesMiddleware($route, $middlewareName)
+{
+   return $middlewares = $route->gatherMiddleware();
+
+    foreach ($middlewares as $middleware) {
+        if (preg_match("/^$middlewareName:/", $middleware)) {
+            return true;
+        }
+    }
+
+    return false;
+}
