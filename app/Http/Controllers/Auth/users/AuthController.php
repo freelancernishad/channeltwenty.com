@@ -51,8 +51,9 @@ class AuthController extends Controller
 public function checkTokenExpiration(Request $request)
 {
 
+
     // return $token = $request->token;
-    $token = $request->bearerToken();
+     $token = $request->bearerToken();
 
 
     try {
@@ -63,8 +64,29 @@ public function checkTokenExpiration(Request $request)
         $isExpired = $payload->get('exp') < time();
 
         $user = Auth::guard('web')->setToken($token)->authenticate();
+
+
+        // Get user's roles
+      $roles = $user->roles;
+    // return $roles->permissions;
+
+    // Initialize an empty array to store permissions
+    $permissions = [];
+
+    // Loop through each role to fetch permissions
+    // foreach ($roles as $role) {
+        // Merge permissions associated with the current role into the permissions array
+        $permissions = array_merge($permissions, $roles->permissions->toArray());
+    // }
+
+    // Remove duplicates and re-index the array
+    $permissions = array_values(array_unique($permissions, SORT_REGULAR));
+
+    // Now $permissions contains all unique permissions associated with the user
+    // You can use $permissions as needed
+
         // $user = JWTAuth::setToken($token)->authenticate();
-        return response()->json(['message' => 'Token is valid', 'user' => $user], 200);
+        return response()->json(['message' => 'Token is valid', 'user' => $user ], 200);
     } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
         // Token has expired
         return response()->json(['message' => 'Token has expired'], 401);

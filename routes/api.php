@@ -74,101 +74,84 @@ Route::post('/user/login', [AuthController::class, 'login'])->name('login');
 Route::post('/user/check/login', [AuthController::class, 'checkTokenExpiration'])->name('checklogin');
 Route::post('/user/check-token', [AuthController::class, 'checkToken']);
 Route::post('/user/register', [AuthController::class, 'register']);
-
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::post('/user/logout', [AuthController::class, 'logout']);
+    Route::post('/user/logout', [AuthController::class, 'logout'])->name('user.logout');
 
     // Routes for user registration, update, delete, and show
     Route::prefix('users')->group(function () {
-        Route::put('{id}', [UserController::class, 'update']);       // Update user by ID
-        Route::delete('{id}', [UserController::class, 'delete']);    // Delete user by ID
-        Route::get('{id}', [UserController::class, 'show']);          // Show user details by ID
+        Route::put('{id}', [UserController::class, 'update'])->name('users.update');       // Update user by ID
+        Route::delete('{id}', [UserController::class, 'delete'])->name('users.delete');    // Delete user by ID
+        Route::get('{id}', [UserController::class, 'show'])->name('users.show');          // Show user details by ID
     });
-    Route::post('users/change-password', [UserController::class, 'changePassword']);
+    Route::post('users/change-password', [UserController::class, 'changePassword'])->name('users.change_password');
     Route::get('/user-access', function (Request $request) {
         return 'user access';
-    });
+    })->name('user.access');
 
+    // Add names to other routes
+    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+    Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
+    Route::delete('/articles/{id}', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
+    Route::get('/article/list/author', [ArticleController::class, 'getlistByAuthor'])->name('articles.list_author');
 
+    // Comment routes
+    Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::get('/comments/{id}', [CommentController::class, 'show'])->name('comments.show');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+    // Add names to other routes
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
+    Route::post('video-categories', [VideoCategoryController::class, 'store'])->name('video_categories.store');
+    Route::get('video-categories/{videoCategory}', [VideoCategoryController::class, 'show'])->name('video_categories.show');
+    Route::post('video-categories/{videoCategory}', [VideoCategoryController::class, 'update'])->name('video_categories.update');
+    Route::delete('video-categories/{videoCategory}', [VideoCategoryController::class, 'destroy'])->name('video_categories.destroy');
 
+    // Add names to other routes
+    Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+    Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
+    Route::post('/videos/{video}', [VideoController::class, 'update'])->name('videos.update');
+    Route::get('/videos/{video}', [VideoController::class, 'show'])->name('videos.show');
+    Route::delete('/videos/{video}', [VideoController::class, 'destroy'])->name('videos.destroy');
 
+    // Add names to other routes
+    Route::post('/social-links', [SocialLinkController::class, 'store'])->name('social_links.store');
+    Route::post('/social-links/{idOrPlatform}', [SocialLinkController::class, 'update'])->name('social_links.update');
+    Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destroy'])->name('social_links.destroy');
 
-Route::post('/articles', [ArticleController::class, 'store']);
-Route::get('/articles/{id}', [ArticleController::class, 'show']);
-Route::post('/articles/{id}', [ArticleController::class, 'update']);
-Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
+    // Add names to other routes
+    Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
+    Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show');
+    Route::post('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
+    Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
 
-Route::get('/article/list/author', [ArticleController::class, 'getlistByAuthor']);
+    Route::post('advertisements', [AdvertisementController::class, 'store'])->name('advertisements.store');
+    Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy'])->name('advertisements.destroy');
 
-// Comment routes
-Route::get('/comments', [CommentController::class, 'index']);
-Route::get('/comments/{id}', [CommentController::class, 'show']);
-Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+    // Add names to other routes
+    Route::get('/live_videos', [LiveVideoController::class, 'index'])->name('live_videos.index');
+    Route::post('/live_videos', [LiveVideoController::class, 'store'])->name('live_videos.store');
+    Route::get('/live_videos/{id}', [LiveVideoController::class, 'show'])->name('live_videos.show');
+    Route::post('/live_videos/{id}', [LiveVideoController::class, 'update'])->name('live_videos.update');
+    Route::delete('/live_videos/{id}', [LiveVideoController::class, 'destroy'])->name('live_videos.destroy');
 
+    Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo'])->name('live_video.last');
 
-Route::post('/categories', [CategoryController::class, 'store']);
-Route::post('/categories/{id}', [CategoryController::class, 'update']);
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+    Route::get('selected-articles', [SelectedArticleController::class, 'index'])->name('selected_articles.index');
+    Route::post('selected-articles', [SelectedArticleController::class, 'store'])->name('selected_articles.store');
+    Route::get('selected-articles/{id}', [SelectedArticleController::class, 'show'])->name('selected_articles.show');
+    Route::post('selected-articles/{id}', [SelectedArticleController::class, 'update'])->name('selected_articles.update');
+    Route::delete('selected-articles/{id}', [SelectedArticleController::class, 'destroy'])->name('selected_articles.destroy');
+    Route::delete('selected-article/delete-by-date', [SelectedArticleController::class, 'deleteByDate'])->name('selected_articles.delete_by_date');
+    Route::get('selected-articles/{id}/related', [SelectedArticleController::class, 'relatedArticles'])->name('selected_articles.related');
 
-
-Route::post('video-categories', [VideoCategoryController::class, 'store']);
-Route::get('video-categories/{videoCategory}', [VideoCategoryController::class, 'show']);
-Route::post('video-categories/{videoCategory}', [VideoCategoryController::class, 'update']);
-Route::delete('video-categories/{videoCategory}', [VideoCategoryController::class, 'destroy']);
-
-
-
-Route::get('/videos', [VideoController::class, 'index']);
-Route::post('/videos', [VideoController::class, 'store']);
-Route::post('/videos/{video}', [VideoController::class, 'update']);
-Route::get('/videos/{video}', [VideoController::class, 'show']);
-Route::delete('/videos/{video}', [VideoController::class, 'destroy']);
-
-
-
-Route::post('/social-links', [SocialLinkController::class, 'store']);
-Route::post('/social-links/{idOrPlatform}', [SocialLinkController::class, 'update']);
-Route::delete('/social-links/{socialLink}', [SocialLinkController::class, 'destroy']);
-
-
-Route::get('/pages', [PageController::class, 'index']);
-Route::post('/pages', [PageController::class, 'store']);
-Route::get('/pages/{page}', [PageController::class, 'show']);
-Route::post('/pages/{page}', [PageController::class, 'update']);
-Route::delete('/pages/{page}', [PageController::class, 'destroy']);
-
-Route::post('advertisements', [AdvertisementController::class, 'store']);
-Route::delete('advertisements/{slug}', [AdvertisementController::class, 'destroy']);
-
-
-
-Route::get('/live_videos', [LiveVideoController::class, 'index']);
-Route::post('/live_videos', [LiveVideoController::class, 'store']);
-Route::get('/live_videos/{id}', [LiveVideoController::class, 'show']);
-Route::post('/live_videos/{id}', [LiveVideoController::class, 'update']);
-Route::delete('/live_videos/{id}', [LiveVideoController::class, 'destroy']);
-
-Route::post('/live_video/last', [LiveVideoController::class, 'updateLastVideo']);
-
-
-
-
-Route::get('selected-articles', [SelectedArticleController::class, 'index']);
-Route::post('selected-articles', [SelectedArticleController::class, 'store']);
-Route::get('selected-articles/{id}', [SelectedArticleController::class, 'show']);
-Route::post('selected-articles/{id}', [SelectedArticleController::class, 'update']);
-Route::delete('selected-articles/{id}', [SelectedArticleController::class, 'destroy']);
-Route::delete('selected-article/delete-by-date', [SelectedArticleController::class, 'deleteByDate']);
-Route::get('selected-articles/{id}/related', [SelectedArticleController::class, 'relatedArticles']);
-
-
-Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate']);
-Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate']);
-
-
+    Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate'])->name('selected_articles.update_multiple_by_date');
+    Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate'])->name('selected_articles.filter_by_date');
 });
 
 

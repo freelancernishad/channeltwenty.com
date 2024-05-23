@@ -33,6 +33,8 @@ class User extends Authenticatable implements JWTSubject
         'union',
         'org',
         'password',
+        'role',
+        'role_id',
 
     ];
 
@@ -78,9 +80,21 @@ class User extends Authenticatable implements JWTSubject
  }
 
  public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
+ {
+     return $this->belongsTo(Role::class, 'role_id');
+ }
+
+public function permissions()
+{
+    return $this->hasManyThrough(
+        Permission::class,
+        'role_permission', // Pivot table name
+        'user_id',         // Foreign key on the pivot table related to the User model
+        'role_id',         // Foreign key on the pivot table related to the Permission model
+        'id',              // Local key on the User model
+        'role_id'          // Local key on the pivot table related to the Permission model
+    );
+}
 
     public function hasRole($role)
     {
