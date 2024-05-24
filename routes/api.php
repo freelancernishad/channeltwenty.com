@@ -12,6 +12,7 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LiveVideoController;
@@ -166,6 +167,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     })->name('user.access')->middleware('checkPermission:user.access');
 
     // Add names to other routes
+
+    Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index')->middleware('checkPermission:articles.index');
+
+
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store')->middleware('checkPermission:articles.store');
     Route::get('/articles/{id}', [ArticleController::class, 'show'])->name('articles.show')->middleware('checkPermission:articles.show');
     Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update')->middleware('checkPermission:articles.update');
@@ -180,6 +185,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('checkPermission:comments.destroy');
 
     // Add names to other routes
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index')->middleware('checkPermission:categories.index');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store')->middleware('checkPermission:categories.store');
     Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update')->middleware('checkPermission:categories.update');
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('checkPermission:categories.destroy');
@@ -242,11 +248,16 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 
+Route::get('/weather', [WeatherController::class, 'index']);
+
+
 Route::get('/get-mac', [MacController::class, 'getMacAddress']);
 Route::get('/check-python', [MacController::class, 'checkPython']);
 
+
     // Article routes
     Route::get('/articles', [ArticleController::class, 'index']);
+
     Route::get('/articles/by-category/{categoryId}', [ArticleController::class, 'getByCategory']);
     Route::get('/articles/{id}', [ArticleController::class, 'show']);
     Route::get('/article/{slug}', [ArticleController::class, 'showBySlug']);
