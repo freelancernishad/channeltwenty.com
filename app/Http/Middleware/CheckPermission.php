@@ -15,6 +15,6 @@ class CheckPermission
         }
 
         // If the user doesn't have the required permission, return 403 Forbidden
-        return response()->json(['error' => 'Permission denied.'], 403);
+        return response()->json(['error' => 'Permission denied.','status'=>403], 200);
     }
 }
