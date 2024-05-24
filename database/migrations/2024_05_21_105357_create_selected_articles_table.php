@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('selected_articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
+            $table->unsignedBigInteger('article_id'); // Ensure this is an unsignedBigInteger
             $table->date('date');
             $table->timestamps();
+
+            // Manually specify the foreign key constraint
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
         });
     }
 
