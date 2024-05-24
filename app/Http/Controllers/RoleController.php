@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Validator;
 class RoleController extends Controller
 {
 
-    public function getPermissionsByRoleName($roleName)
+    public function getPermissionsByRoleName($id)
     {
-        $role = Role::where('name', $roleName)->firstOrFail();
+        $role = Role::where('id', $id)->firstOrFail();
 
         $permissions = $role->permissions()->get();
 

@@ -123,7 +123,7 @@ Route::apiResource('permissions', PermissionController::class);
 
 
 
-Route::post('get/permissions/{roleName}', [RoleController::class, 'getPermissionsByRoleName']);
+Route::post('get/permissions/{id}', [RoleController::class, 'getPermissionsByRoleName']);
 Route::post('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'attachPermission']);
 Route::post('roles/{roleId}/permissions', [RolePermissionController::class, 'addPermissionsToRole']);
 Route::delete('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'detachPermission']);
