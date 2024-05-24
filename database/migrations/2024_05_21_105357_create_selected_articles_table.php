@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('selected_articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('article_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('article_id'); // Ensure this is an unsignedBigInteger
             $table->date('date');
             $table->timestamps();
 
-
+     
         });
     }
 
