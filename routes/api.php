@@ -56,7 +56,7 @@ $routes = Route::getRoutes();
 foreach ($routes as $route) {
     // Get route action
     $action = $route->getAction();
-   
+
 
     // Check if middleware is defined in the action
     if (isset($action['middleware'])) {
@@ -67,8 +67,8 @@ foreach ($routes as $route) {
             }
         }
 
-   
-   
+
+
         // Check if the middleware is 'checkPermission'
         if ($hasCheckPermission) {
 
@@ -76,13 +76,13 @@ foreach ($routes as $route) {
 
             // Get route name
             $routeName = $route->getName();
-          
-            
+
+
             // Check if route has a name
             if ($routeName) {
                 // Check if permission already exists
                 $existingPermission = Permission::where('path', $routeName)->first();
-                
+
                 // If permission doesn't exist, create it
                 if (!$existingPermission) {
                     Permission::create([
@@ -110,8 +110,19 @@ Route::get('/update/slug', [ArticleController::class, 'updateSlugs']);
 
 
 
-Route::apiResource('roles', RoleController::class);
+Route::get('roles', [RoleController::class, 'index']);
+Route::post('roles', [RoleController::class, 'store']);
+Route::post('roles/{roles}', [RoleController::class, 'update']);
+// Route::apiResource('roles', RoleController::class);
+
+// Route::get('permissions/', [PermissionController::class, 'index']);
+// Route::post('permissions', [PermissionController::class, 'store']);
+// Route::post('permissions/{permissions}', [PermissionController::class, 'update']);
+
 Route::apiResource('permissions', PermissionController::class);
+
+
+
 Route::post('get/permissions/{roleName}', [RoleController::class, 'getPermissionsByRoleName']);
 Route::post('roles/{role}/permissions/{permission}', [RolePermissionController::class, 'attachPermission']);
 Route::post('roles/{roleId}/permissions', [RolePermissionController::class, 'addPermissionsToRole']);
