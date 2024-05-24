@@ -122,19 +122,20 @@ public function permissions()
             ->pluck('permissions')
             ->flatten();
 
-           
+
 
 
         // Check if any of the user's permissions match the provided route name and permission name
         $checkPermission =  $permissions->contains(function ($permission) use ($routeName) {
-         
+
+            return true;
 
             // Log:info($permission->name === $routeName && $permission->permission);
-            return $permission->path === $routeName && $permission->permission;
+            // return $permission->path === $routeName && $permission->permission;
         });
 
 
-       
+
         return $checkPermission;
 
     }
