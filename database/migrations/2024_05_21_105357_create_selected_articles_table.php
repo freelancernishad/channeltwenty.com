@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Manually specify the foreign key constraint
-            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+            $table->foreign('article_id')->references('id')->on('articles');
         });
     }
 
