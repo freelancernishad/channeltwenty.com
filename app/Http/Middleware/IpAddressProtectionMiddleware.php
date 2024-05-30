@@ -16,7 +16,9 @@ class IpAddressProtectionMiddleware
         'https://channeltwenty.com',
         'https://www.channeltwenty.com',
         'https://panchagarh24.com',
-        'https://www.panchagarh24.com',
+        'https://www.panchagarh24.com',        
+        'https://test.panchagarh24.com',
+        'https://www.test.panchagarh24.com',
         'https://news-sys.netlify.app',
 
 
