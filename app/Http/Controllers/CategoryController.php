@@ -15,21 +15,10 @@ class CategoryController extends Controller
 
         if($request->type=='frontend'){
 
-  // Retrieve main categories without children
-$mainCategories = Category::whereDoesntHave('children')
-->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
-->orderBy('serial', 'asc')
-->get();
-
-// Fetch children for each main category
-foreach ($mainCategories as $mainCategory) {
-$mainCategory->children = Category::where('parent_id', $mainCategory->id)
-    ->orderBy('serial', 'asc')
-    ->get();
-}
-
-// Now $mainCategories contains main categories without children and their corresponding children
-return $mainCategories;
+            return Category::with(['parent', 'children'])
+            ->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
+            ->orderBy('serial', 'asc')
+            ->get();
 
         }
 
