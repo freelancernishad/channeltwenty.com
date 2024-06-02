@@ -16,6 +16,7 @@ class CategoryController extends Controller
         if($request->type=='frontend'){
 
             return Category::with(['parent', 'children'])
+            ->whereNull('parent_id') // Exclude categories with a parent_id
             ->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
             ->orderBy('serial', 'asc')
             ->get();
