@@ -10,12 +10,23 @@ use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     // Get list of categories with their parent categories
-    public function index()
+    public function index(Request $request)
     {
-        return Category::with(['parent', 'children'])
-    ->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
-    ->orderBy('serial', 'asc')
-    ->get();
+
+        if($request->type=='frontend'){
+
+            return Category::with(['parent', 'children'])
+            ->whereDoesntHave('children')
+            ->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
+            ->orderBy('serial', 'asc')
+            ->get();
+
+        }
+
+            return Category::with(['parent', 'children'])
+            ->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
+            ->orderBy('serial', 'asc')
+            ->get();
     }
 
     // Create a new category

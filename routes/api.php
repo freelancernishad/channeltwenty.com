@@ -186,6 +186,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Add names to other routes
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index')->middleware('checkPermission:categories.index');
+
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store')->middleware('checkPermission:categories.store');
     Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update')->middleware('checkPermission:categories.update');
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy')->middleware('checkPermission:categories.destroy');
