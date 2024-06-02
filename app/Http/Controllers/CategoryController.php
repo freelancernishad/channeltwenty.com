@@ -16,7 +16,6 @@ class CategoryController extends Controller
         if($request->type=='frontend'){
 
             return Category::with(['parent', 'children'])
-            ->whereDoesntHave('children')
             ->orderByRaw('CASE WHEN serial = 0 THEN 1 ELSE 0 END ASC')
             ->orderBy('serial', 'asc')
             ->get();
