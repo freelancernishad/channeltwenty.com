@@ -241,20 +241,18 @@ class ArticleController extends Controller
 
      function getRelatedArticles(Request $request, $articleSlug) {
         $limit = $request->limit ? $request->limit : 8;
-    
+
         $article = new Article();
         $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug, $limit);
-    
+
         if ($relatedArticles->isEmpty()) {
-            // Return an empty collection or a specific message if no related articles are found
-            return response()->json([
-                'message' => 'No related articles found.'
-            ], 200);
+            // Return a blank object if no related articles are found
+            return response()->json((object)[], 200);
         }
-    
+
         $relatedArticles = ContentService::sortArticleContents($relatedArticles);
         $relatedArticles = DateService::formatArticleDates($relatedArticles);
-    
+
         return ArticleResource::collection($relatedArticles);
     }
 
