@@ -66,23 +66,26 @@ class Article extends Model
 
     public function relatedArticlesByArticleSlug($articleSlug, $limit = 5)
     {
+        // Find the article by slug or fail if not found
         $article = static::where('slug', $articleSlug)->firstOrFail();
-
+    
+        // Get related articles based on shared categories, excluding the current article
         $relatedArticles = static::whereHas('categories', function ($query) use ($article) {
-            $query->whereIn('categories.id', $article->categories()->pluck('categories.id')); // Specify the table name or alias for the id column
-        })
-        ->where('articles.id', '!=', $article->id) // Specify the table name or alias for the id column
-        ->latest()
-        ->take($limit)
-        ->get();
-
-        if (!$article) {
-            // Return a blank object if no related articles are found
+                $query->whereIn('categories.id', $article->categories()->pluck('categories.id')); // Specify the table name or alias for the id column
+            })
+            ->where('articles.id', '!=', $article->id) // Specify the table name or alias for the id column
+            ->latest()
+            ->take($limit)
+            ->get();
+    
+        // Check if related articles are found; if not, return a blank object
+        if ($relatedArticles->isEmpty()) {
             return (object)[];
         }
-
+    
         return $relatedArticles;
     }
+    
 
     public function setSlugAttribute($value)
     {
