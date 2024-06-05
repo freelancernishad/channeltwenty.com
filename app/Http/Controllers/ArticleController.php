@@ -240,6 +240,13 @@ class ArticleController extends Controller
      }
 
      function getRelatedArticles(Request $request, $articleSlug) {
+
+        $checkArticles = Article::where('slug',$articleSlug)->count();
+                        // Check if related articles are found; if not, return a blank object
+                        if ($checkArticles<1) {
+                            return (object)[];
+                        }
+        
         $limit = $request->limit ? $request->limit : 8;
 
         $article = new Article();

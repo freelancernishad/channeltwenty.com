@@ -67,12 +67,8 @@ class Article extends Model
     public function relatedArticlesByArticleSlug($articleSlug, $limit = 5)
     {
         // Find the article by slug or fail if not found
-        $article = static::where('slug', $articleSlug)->first();
-                // Check if related articles are found; if not, return a blank object
-                if (!$article) {
-                    return (object)[];
-                }
-    
+        $article = static::where('slug', $articleSlug)->firstOrFail();
+
         // Get related articles based on shared categories, excluding the current article
         $relatedArticles = static::whereHas('categories', function ($query) use ($article) {
                 $query->whereIn('categories.id', $article->categories()->pluck('categories.id')); // Specify the table name or alias for the id column
@@ -81,12 +77,12 @@ class Article extends Model
             ->latest()
             ->take($limit)
             ->get();
-    
 
-    
+
+
         return $relatedArticles;
     }
-    
+
 
     public function setSlugAttribute($value)
     {
