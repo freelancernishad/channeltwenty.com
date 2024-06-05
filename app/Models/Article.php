@@ -76,6 +76,11 @@ class Article extends Model
         ->take($limit)
         ->get();
 
+        if (!$article) {
+            // Return a blank object if no related articles are found
+            return (object)[];
+        }
+
         return $relatedArticles;
     }
 

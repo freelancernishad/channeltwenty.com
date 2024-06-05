@@ -245,10 +245,7 @@ class ArticleController extends Controller
         $article = new Article();
         $relatedArticles = $article->relatedArticlesByArticleSlug($articleSlug, $limit);
 
-        if ($relatedArticles->isEmpty()) {
-            // Return a blank object if no related articles are found
-            return response()->json((object)[], 200);
-        }
+
 
         $relatedArticles = ContentService::sortArticleContents($relatedArticles);
         $relatedArticles = DateService::formatArticleDates($relatedArticles);
