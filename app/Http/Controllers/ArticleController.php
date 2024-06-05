@@ -244,7 +244,10 @@ class ArticleController extends Controller
         $checkArticles = Article::where('slug',$articleSlug)->count();
                         // Check if related articles are found; if not, return a blank object
                         if ($checkArticles<1) {
-                            return [];
+                            $emptyData = [
+                                'data'=>[]
+                            ];
+                            return $emptyData;
                         }
         
         $limit = $request->limit ? $request->limit : 8;
