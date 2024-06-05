@@ -252,6 +252,7 @@ class ArticleController extends Controller
         $relatedArticles = ContentService::sortArticleContents($relatedArticles);
         $relatedArticles = DateService::formatArticleDates($relatedArticles);
         return ArticleResource::collection($relatedArticles);
+
         return $relatedArticles;
      }
 
