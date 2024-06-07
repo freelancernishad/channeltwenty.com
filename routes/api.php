@@ -14,7 +14,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\api\UserController;
+
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RoleUserController;
 use App\Http\Controllers\LiveVideoController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SocialLinkController;
@@ -156,11 +158,26 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/user/logout', [AuthController::class, 'logout'])->name('user.logout');
 
     // Routes for user registration, update, delete, and show
-    Route::prefix('users')->group(function () {
-        Route::put('{id}', [UserController::class, 'update'])->name('users.update')->middleware('checkPermission:users.update');
-        Route::delete('{id}', [UserController::class, 'delete'])->name('users.delete')->middleware('checkPermission:users.delete');
-        Route::get('{id}', [UserController::class, 'show'])->name('users.show')->middleware('checkPermission:users.show');
+    // Route::prefix('users')->group(function () {
+    //     Route::put('{id}', [UserController::class, 'update'])->name('users.update')->middleware('checkPermission:users.update');
+    //     Route::delete('{id}', [UserController::class, 'delete'])->name('users.delete')->middleware('checkPermission:users.delete');
+    //     Route::get('{id}', [UserController::class, 'show'])->name('users.show')->middleware('checkPermission:users.show');
+    // });
+
+
+    ///role users
+
+    Route::prefix('users/role/system')->group(function () {
+        Route::get('/', [RoleUserController::class, 'index']); // List all users
+        Route::post('/', [RoleUserController::class, 'store']); // store a specific user
+        Route::post('/{id}', [RoleUserController::class, 'update']); // Update a specific user
+        Route::get('/{id}', [RoleUserController::class, 'show']); // show a specific user
+        Route::delete('/{id}', [RoleUserController::class, 'destroy']); // Delete a specific user
     });
+
+
+
+
     Route::post('users/change-password', [UserController::class, 'changePassword'])->name('users.change_password')->middleware('checkPermission:users.change_password');
     Route::get('/user-access', function (Request $request) {
         return 'user access';
@@ -237,6 +254,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::post('selected-article/update-multiple-by-date', [SelectedArticleController::class, 'updateMultipleByDate'])->name('selected_articles.update_multiple_by_date')->middleware('checkPermission:selected_articles.update_multiple_by_date');
     Route::get('selected-article/filter-by-date', [SelectedArticleController::class, 'filterByDate'])->name('selected_articles.filter_by_date')->middleware('checkPermission:selected_articles.filter_by_date');
+
+
 
 
 
