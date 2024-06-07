@@ -11,9 +11,19 @@ class VideoController extends Controller
 {
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $videos = Video::orderBy('id','desc')->paginate(20);
+
+        $cat = $request->cat;
+        if($cat){
+            $videos = Video::where([
+                'category_name'=>$cat
+            ])->orderBy('id','desc')->paginate(20);
+        }else{
+            $videos = Video::orderBy('id','desc')->paginate(20);
+        }
+
+
         return response()->json($videos);
     }
 
