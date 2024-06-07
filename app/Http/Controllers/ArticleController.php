@@ -16,23 +16,42 @@ class ArticleController extends Controller
      // Get list of articles with their categories
      public function index(Request $request)
      {
+         $query = Article::with('categories');
 
-        if($request->paginate){
-            $paginate = $request->paginate;
-            $articles = Article::with('categories')->orderBy('id','desc')->paginate($paginate);
-        }else{
-            $articles = Article::with('categories')->orderBy('id','desc')->get();
+         if ($request->has('author')) {
+             $authorName = $request->author;
+             $query->whereHas('user', function ($q) use ($authorName) {
+                 $q->where('name', 'like', '%' . $authorName . '%');
+             });
+         }
 
-        }
+         if ($request->has('date')) {
+             $date = $request->date;
+             $query->whereDate('date', $date);
+         }
 
-        $articles = DateService::formatArticleDates($articles);
-        $articles = ContentService::sortArticleContents($articles);
-        // return $articles;
-        return ArticleResource::collection($articles);
+         if ($request->has('category')) {
+             $categorySlug = $request->category;
+             $query->whereHas('categories', function ($q) use ($categorySlug) {
+                 $q->where('label', $categorySlug);
+             });
+         }
 
+         $query->orderBy('id', 'desc');
 
+         if ($request->has('paginate')) {
+             $paginate = $request->paginate;
+             $articles = $query->paginate($paginate);
+         } else {
+             $articles = $query->get();
+         }
 
+         $articles = DateService::formatArticleDates($articles);
+         $articles = ContentService::sortArticleContents($articles);
+
+         return ArticleResource::collection($articles);
      }
+
 
      // Get list of articles by category
      public function getByCategory($categoryId)
@@ -249,7 +268,7 @@ class ArticleController extends Controller
                             ];
                             return $emptyData;
                         }
-        
+
         $limit = $request->limit ? $request->limit : 8;
 
         $article = new Article();
