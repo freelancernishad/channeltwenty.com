@@ -88,6 +88,6 @@ class RoleUserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return response()->json('success', 204);
+        return response()->json(['status'=>'success'], 204);
     }
 }
