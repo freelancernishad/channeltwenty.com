@@ -34,9 +34,10 @@ class WeatherController extends Controller
 
               $country_code = $address['country_code'];
             if($country_code=='bd'){
-                $districtName = "Dhaka";
-            }else{
+
                 $districtName = $address['state_district'];
+            }else{
+                $districtName = "Dhaka";
             }
 
 
