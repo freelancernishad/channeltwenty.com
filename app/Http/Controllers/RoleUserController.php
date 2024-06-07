@@ -87,7 +87,11 @@ class RoleUserController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
+        if($user){
+
+            $user->delete();
         return ['status'=>'success'];
+        }
+        return ['status'=>'not found'];
     }
 }
