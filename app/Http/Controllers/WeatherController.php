@@ -1,25 +1,44 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Services\WeatherService;
 
 class WeatherController extends Controller
 {
-    public function index()
+    protected $weatherService;
+
+    public function __construct(WeatherService $weatherService)
     {
-        // Make a GET request to weather API
-        $client = new Client();
-        $response = $client->get('https://api.openweathermap.org/data/2.5/weather?q=Rangpur Division, BD&appid=c97986297f1e4ab6aca9bd348513f09f&units=metric');
-        $data = json_decode($response->getBody(), true);
+        $this->weatherService = $weatherService;
+    }
+
+    public function show(Request $request)
+    {
 
 
 
+        $latitude = $request->input('lat');
+        $longitude = $request->input('lon');
 
 
+        if ($latitude && $longitude) {
 
-        // Return weather data as JSON
-        return response()->json($data);
+            // Call WeatherService with latitude and longitude
+            $weather = $this->weatherService->getWeatherByCoordinates($latitude, $longitude);
+
+              $districtName = $this->weatherService->getLocationName($latitude, $longitude)['english']['address']['state_district'];
+            $city = str_replace(' District', '', $districtName);
+             $weather = $this->weatherService->getWeather($city);
+            // $city = $weather['name']; // Get city name from response
+        } else {
+            // Default to New York if no coordinates provided
+            $city = $request->input('city', 'Dhaka'); // Default to New York
+            $weather = $this->weatherService->getWeather($city);
+        }
+
+
+        return $weather;
+        // return view('weather', ['weather' => $weather, 'city' => $city]);
     }
 }

@@ -249,7 +249,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 
-Route::get('/weather', [WeatherController::class, 'index']);
+Route::get('/weather', [WeatherController::class, 'show']);
 
 
 Route::get('/get-mac', [MacController::class, 'getMacAddress']);
