@@ -88,9 +88,8 @@ class RoleUserController extends Controller
     {
         $user = User::findOrFail($id);
         if($user){
-
             $user->delete();
-        return ['status'=>'success'];
+            return ['status'=>'success'];
         }
         return ['status'=>'not found'];
     }

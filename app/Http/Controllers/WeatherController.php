@@ -26,7 +26,7 @@ class WeatherController extends Controller
 
             // Call WeatherService with latitude and longitude
             $weather = $this->weatherService->getWeatherByCoordinates($latitude, $longitude);
-
+return $$districtName = $this->weatherService->getLocationName($latitude, $longitude);
               $districtName = $this->weatherService->getLocationName($latitude, $longitude)['english']['address']['state_district'];
             $city = str_replace(' District', '', $districtName);
              $weather = $this->weatherService->getWeather($city);
