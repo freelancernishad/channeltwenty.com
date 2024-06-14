@@ -266,7 +266,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 
 });
-
+Route::get('frontend/selected-articles', [SelectedArticleController::class, 'index']);
 
 Route::get('/weather', [WeatherController::class, 'show']);
 
