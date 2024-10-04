@@ -23,7 +23,8 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*',        'https://channeltwenty.com',
+    'https://www.channeltwenty.com'],
 
     'allowed_origins_patterns' => [],
 
