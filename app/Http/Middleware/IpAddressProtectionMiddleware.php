@@ -13,10 +13,9 @@ class IpAddressProtectionMiddleware
         'http://test.localhost:8000',
         'http://localhost:5173',
         'https://channel20-suyel.netlify.app',
-        'https://channeltwenty.com',
-        'https://www.channeltwenty.com',
+
         'https://panchagarh24.com',
-        'https://www.panchagarh24.com',        
+        'https://www.panchagarh24.com',
         'https://test.panchagarh24.com',
         'https://www.test.panchagarh24.com',
         'https://news-sys.netlify.app',
