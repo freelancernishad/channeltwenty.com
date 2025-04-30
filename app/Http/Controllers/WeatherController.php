@@ -16,7 +16,6 @@ class WeatherController extends Controller
     public function show(Request $request)
     {
 
-
         return 0;
 
         $latitude = $request->input('lat');
